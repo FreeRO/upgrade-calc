@@ -47,20 +47,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { armorUpgradeChancesWithElu } from '@/utils/upgrade-constants'
+import { computed, ref } from 'vue';
+import {} from '@/utils/constants';
 
-type UpgradeItemType = 'armor' | 'weapon' | 'none'
+type UpgradeItemType = 'armor' | 'weapon' | 'none';
 
-let selectedUpgradeItemType = ref<UpgradeItemType>('armor')
-let weaponPrice = ref(0)
-let armorPrice = ref(0)
+let selectedUpgradeItemType = ref<UpgradeItemType>('armor');
+let weaponPrice = ref(0);
+let armorPrice = ref(0);
 
-const isArmorItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'armor')
-const isWeaponItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'weapon')
+const isArmorItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'armor');
+const isWeaponItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'weapon');
 
 function changeUpgradeItemType(type: UpgradeItemType) {
-  selectedUpgradeItemType.value = type
+  selectedUpgradeItemType.value = type;
 }
 </script>
 
