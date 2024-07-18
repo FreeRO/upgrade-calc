@@ -50,4 +50,25 @@ function roundToDecimalPlace(num: number, decimalPlaces: number) {
   return Math.round(num * p + e) / p;
 }
 
-export { calculateUpgradeAttempts, calculateRequiredUpgradeMaterials, roundToDecimalPlace };
+function formatNumberWithDots(num: number): string {
+  const inputString = num.toString();
+  let formattedString = '';
+  let count = 0;
+
+  for (let i = inputString.length - 1; i >= 0; i--) {
+    if (count > 0 && count % 3 === 0) {
+      formattedString = '.' + formattedString;
+    }
+    formattedString = inputString[i] + formattedString;
+    count++;
+  }
+
+  return formattedString + 'z';
+}
+
+export {
+  calculateUpgradeAttempts,
+  calculateRequiredUpgradeMaterials,
+  roundToDecimalPlace,
+  formatNumberWithDots
+};

@@ -1,7 +1,7 @@
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 import type WeaponUpgradeData from '@/interfaces/WeaponUpgradeData';
 
-const upgradePriceWithEnrichedMaterial = 20000;
+const npcUpgradePriceWithEnrichedMaterial = 20000;
 
 const armorUpgradeData: ArmorUpgradeData = {
   probabilities: {
@@ -50,4 +50,4 @@ const weaponUpgradeData: WeaponUpgradeData = {
   }
 };
 
-export { armorUpgradeData, weaponUpgradeData, upgradePriceWithEnrichedMaterial };
+export { armorUpgradeData, weaponUpgradeData, npcUpgradePriceWithEnrichedMaterial };

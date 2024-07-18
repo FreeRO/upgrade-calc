@@ -35,26 +35,18 @@
         <div class="upgrade-item-type-selector__option-text">Оружие</div>
       </div>
     </div>
-    <form class="form armor-upgrade-form" v-if="isArmorItemTypeSelected">
-      <div class="form-input">
-        <div class="form-input__label">Стоимость +0 предмета</div>
-        <div class="form-input__input">
-          <input type="number" v-model="armorPrice" />
-        </div>
-      </div>
-    </form>
+    <ArmorUpgradeForm v-show="isArmorItemTypeSelected"> </ArmorUpgradeForm>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import {} from '@/utils/constants';
+import {} from '@/utils/upgrade/constants';
+import ArmorUpgradeForm from '@/components/ArmorUpgradeForm.vue';
 
 type UpgradeItemType = 'armor' | 'weapon' | 'none';
 
-let selectedUpgradeItemType = ref<UpgradeItemType>('armor');
-let weaponPrice = ref(0);
-let armorPrice = ref(0);
+const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
 
 const isArmorItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'armor');
 const isWeaponItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'weapon');
@@ -92,7 +84,7 @@ function changeUpgradeItemType(type: UpgradeItemType) {
     flex-direction: row;
     align-items: center;
     padding: 0.5rem;
-    margin: 0 1rem;
+    margin: 0 0.5rem;
     border-radius: 5px;
     cursor: pointer;
     &:hover {
@@ -112,20 +104,6 @@ function changeUpgradeItemType(type: UpgradeItemType) {
   &__option-img {
     width: 100%;
     height: auto;
-  }
-}
-
-.form {
-  padding-top: 1rem;
-}
-
-.form-input {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  &__label {
-    margin-right: 0.5rem;
   }
 }
 </style>

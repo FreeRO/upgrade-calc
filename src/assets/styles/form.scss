@@ -1,0 +1,52 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 1rem;
+  width: 100%;
+}
+
+.form-input {
+  margin-bottom: 1rem;
+
+  &__label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  &__label-text {
+    display: inline;
+  }
+  &__input {
+    margin-left: 0.5rem;
+  }
+}
+
+.form-calculation-results {
+  background-color: #fefefe;
+  border-radius: 5px;
+  padding: 0.5rem;
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.form-calculation-result {
+  display: flex;
+  flex-direction: row;
+
+  &__key {
+    margin-right: 0.3rem;
+  }
+  &__value {
+  }
+}
