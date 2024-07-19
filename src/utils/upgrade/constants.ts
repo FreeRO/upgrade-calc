@@ -1,6 +1,7 @@
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 import type WeaponUpgradeData from '@/interfaces/WeaponUpgradeData';
 
+const upgradeLevels: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const npcUpgradePriceWithEnrichedMaterial = 20000;
 
 const armorUpgradeData: ArmorUpgradeData = {
@@ -50,4 +51,4 @@ const weaponUpgradeData: WeaponUpgradeData = {
   }
 };
 
-export { armorUpgradeData, weaponUpgradeData, npcUpgradePriceWithEnrichedMaterial };
+export { armorUpgradeData, weaponUpgradeData, npcUpgradePriceWithEnrichedMaterial, upgradeLevels };

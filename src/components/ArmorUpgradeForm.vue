@@ -18,7 +18,7 @@
           <span class="form-input__label-text">Заточить до</span>
           <select class="form-input__input" v-model="upgradeUntil">
             <option value="0">Не выбрано</option>
-            <option v-for="level in allUpgradeLevels" :value="level" :key="level">
+            <option v-for="level in upgradeLevels" :value="level" :key="level">
               {{ '+' + level }}
             </option>
           </select>
@@ -80,15 +80,17 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { armorUpgradeData, npcUpgradePriceWithEnrichedMaterial } from '@/utils/upgrade/constants';
+import {
+  upgradeLevels,
+  armorUpgradeData,
+  npcUpgradePriceWithEnrichedMaterial
+} from '@/utils/upgrade/constants';
 import {
   calculateRequiredUpgradeMaterials,
   calculateUpgradeAttempts,
   formatNumberWithDots,
   roundToDecimalPlace
 } from '@/utils/upgrade/calculations';
-
-const allUpgradeLevels: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const itemPrice = ref(900000);
 const eluPrice = ref(9000);
@@ -101,11 +103,11 @@ const enrichEluUsed = computed(() => {
 });
 
 const upgradeUntilIndex = computed(() => {
-  return allUpgradeLevels.findIndex((x) => x === upgradeUntil.value);
+  return upgradeLevels.findIndex((x) => x === upgradeUntil.value);
 });
 
 const enrichedEluUsedFromIndex = computed(() => {
-  return allUpgradeLevels.findIndex((x) => x === enrichedEluUsedFrom.value);
+  return upgradeLevels.findIndex((x) => x === enrichedEluUsedFrom.value);
 });
 
 const eluUpgradeProbabilities = computed(() => {
@@ -137,10 +139,8 @@ const possibleEnrichedEluUpgradeLevels = computed(() => {
   if (upgradeUntil.value < firstRiskyUpgradeLevel) {
     return [];
   }
-  const firstRiskyUpgradeLevelIndex = allUpgradeLevels.findIndex(
-    (x) => x === firstRiskyUpgradeLevel
-  );
-  return allUpgradeLevels.slice(firstRiskyUpgradeLevelIndex, upgradeUntilIndex.value + 1);
+  const firstRiskyUpgradeLevelIndex = upgradeLevels.findIndex((x) => x === firstRiskyUpgradeLevel);
+  return upgradeLevels.slice(firstRiskyUpgradeLevelIndex, upgradeUntilIndex.value + 1);
 });
 
 const eluRequiredCount = computed(() => {
