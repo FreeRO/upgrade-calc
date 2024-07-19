@@ -61,17 +61,22 @@
         <span class="form-input__label-text">Кто точит</span>
         <div class="form-input__radio-button-container">
           <label class="form-input__radio-button-label">
+            <input
+              class="form-input__radio-button-input"
+              type="radio"
+              v-model="upgradeMethod"
+              :value="'npc'"
+            />
             <span class="form-input__radio-button-label-text">NPC</span>
-            <input class="form-input__input" type="radio" v-model="upgradeMethod" :value="'npc'" />
           </label>
           <label class="form-input__radio-button-label">
-            <span class="form-input__radio-button-label-text">White Smith 70 job lvl</span>
             <input
-              class="form-input__input"
+              class="form-input__radio-button-input"
               type="radio"
               v-model="upgradeMethod"
               :value="'whiteSmith'"
             />
+            <span class="form-input__radio-button-label-text">White Smith 70 job lvl</span>
           </label>
         </div>
       </div>
