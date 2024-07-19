@@ -35,7 +35,7 @@
           </select>
         </label>
       </div>
-      <div class="form-input" v-if="enrichEluUsed">
+      <div class="form-input" v-show="enrichEluUsed">
         <label class="form-input__label">
           Цена Enriched Elunium
           <input class="form-input__input" type="number" v-model="enrichedEluPrice" />
@@ -47,25 +47,31 @@
       <div class="form-calculation-result">
         <span class="form-calculation-result__key">Вещей понадобится:</span>
         <span class="form-calculation-result__value">{{
-          `${itemsRequired}, стоимость ${formatNumberWithDots(itemsRequiredPrice)}`
+          `${itemsRequiredCount}, стоимость ${formatNumberWithDots(itemCost)}`
         }}</span>
       </div>
       <div class="form-calculation-result">
         <span class="form-calculation-result__key">Elunium'ов понадобится:</span>
         <span class="form-calculation-result__value">{{
-          `${eluRequired}, стоимость ${formatNumberWithDots(eluRequiredPrice)}`
+          `${eluRequiredCount}, стоимость ${formatNumberWithDots(eluCost)}`
         }}</span>
       </div>
-      <div class="form-calculation-result" v-if="enrichEluUsed">
+      <div class="form-calculation-result" v-show="enrichEluUsed">
         <span class="form-calculation-result__key">Enriched Elunium'ов понадобится:</span>
         <span class="form-calculation-result__value">{{
-          `${enrichedEluRequired}, стоимость ${formatNumberWithDots(enrichedEluRequiredPrice)}`
+          `${enrichedEluRequiredCount}, стоимость ${formatNumberWithDots(enrichedEluCost)}`
         }}</span>
+      </div>
+      <div class="form-calculation-result">
+        <span class="form-calculation-result__key">Комиссия NPC:</span>
+        <span class="form-calculation-result__value">
+          {{ formatNumberWithDots(npcComission) }}
+        </span>
       </div>
       <div class="form-calculation-result">
         <span class="form-calculation-result__key">Общая стоимость:</span>
         <span class="form-calculation-result__value">{{
-          formatNumberWithDots(totalUpgradePrice)
+          formatNumberWithDots(totalUpgradeCost)
         }}</span>
       </div>
     </div>
@@ -74,7 +80,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { armorUpgradeData } from '@/utils/upgrade/constants';
+import { armorUpgradeData, npcUpgradePriceWithEnrichedMaterial } from '@/utils/upgrade/constants';
 import {
   calculateRequiredUpgradeMaterials,
   calculateUpgradeAttempts,
@@ -122,7 +128,7 @@ const upgradeProbabilities = computed(() => {
   return [...eluUpgradeProbabilities.value, ...enrichedEluUpgradeProbabilities.value];
 });
 
-const itemsRequired = computed(() => {
+const itemsRequiredCount = computed(() => {
   return calculateUpgradeAttempts(upgradeProbabilities.value);
 });
 
@@ -137,29 +143,35 @@ const possibleEnrichedEluUpgradeLevels = computed(() => {
   return allUpgradeLevels.slice(firstRiskyUpgradeLevelIndex, upgradeUntilIndex.value + 1);
 });
 
-const eluRequired = computed(() => {
+const eluRequiredCount = computed(() => {
   return calculateRequiredUpgradeMaterials(eluUpgradeProbabilities.value);
 });
 
-const enrichedEluRequired = computed(() => {
+const enrichedEluRequiredCount = computed(() => {
   return calculateRequiredUpgradeMaterials(enrichedEluUpgradeProbabilities.value);
 });
 
-const itemsRequiredPrice = computed(() => {
-  return roundToDecimalPlace(itemsRequired.value * itemPrice.value, 0);
+const itemCost = computed(() => {
+  return roundToDecimalPlace(itemsRequiredCount.value * itemPrice.value, 0);
 });
 
-const eluRequiredPrice = computed(() => {
-  return roundToDecimalPlace(eluRequired.value * eluPrice.value, 0);
+const eluCost = computed(() => {
+  return roundToDecimalPlace(eluRequiredCount.value * eluPrice.value, 0);
 });
 
-const enrichedEluRequiredPrice = computed(() => {
-  return roundToDecimalPlace(enrichedEluRequired.value * enrichedEluPrice.value, 0);
+const enrichedEluCost = computed(() => {
+  return roundToDecimalPlace(enrichedEluRequiredCount.value * enrichedEluPrice.value, 0);
 });
 
-const totalUpgradePrice = computed(() => {
+const npcComission = computed(() => {
+  const eluComission = eluRequiredCount.value * armorUpgradeData.npcUpgradePrice;
+  const erichedEluComission = enrichedEluRequiredCount.value * npcUpgradePriceWithEnrichedMaterial;
+  return roundToDecimalPlace(eluComission + erichedEluComission, 0);
+});
+
+const totalUpgradeCost = computed(() => {
   return roundToDecimalPlace(
-    itemsRequiredPrice.value + eluRequiredPrice.value + enrichedEluRequiredPrice.value,
+    itemCost.value + eluCost.value + enrichedEluCost.value + npcComission.value,
     0
   );
 });

@@ -1,4 +1,7 @@
 function calculateUpgradeAttempts(chances: number[]) {
+  if (chances.length === 0) {
+    return 0;
+  }
   const cumulativeChance = chances.reduce((acc, x) => acc * x, 1);
   return roundToDecimalPlace(1 / cumulativeChance, 1);
 }
