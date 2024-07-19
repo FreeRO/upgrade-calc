@@ -35,16 +35,17 @@
         <div class="upgrade-item-type-selector__option-text">Оружие</div>
       </div>
     </div>
-    <ArmorUpgradeForm v-show="isArmorItemTypeSelected"> </ArmorUpgradeForm>
+    <UpgradeForm :upgrade-item-type="'armor'" v-show="isArmorItemTypeSelected" />
+    <UpgradeForm :upgrade-item-type="'weapon'" v-show="isWeaponItemTypeSelected" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import {} from '@/utils/upgrade/constants';
+import { type UpgradeItemType } from '@/utils/upgrade/constants';
 import ArmorUpgradeForm from '@/components/ArmorUpgradeForm.vue';
-
-type UpgradeItemType = 'armor' | 'weapon' | 'none';
+import WeaponUpgradeForm from '@/components/WeaponUpgradeForm.vue';
+import UpgradeForm from '@/components/UpgradeForm.vue';
 
 const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
 

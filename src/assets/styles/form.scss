@@ -26,6 +26,15 @@
   &__input {
     margin-left: 0.5rem;
   }
+  &__radio-button-container {
+    display: flex;
+    flex-direction: row;
+  }
+  &__radio-button-label {
+    margin-right: 1rem;
+  }
+  &__radio-button-label-text {
+  }
 }
 
 .form-calculation-results {
