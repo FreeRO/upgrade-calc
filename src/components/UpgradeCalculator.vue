@@ -43,8 +43,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { type UpgradeItemType } from '@/utils/upgrade/constants';
-import ArmorUpgradeForm from '@/components/ArmorUpgradeForm.vue';
-import WeaponUpgradeForm from '@/components/WeaponUpgradeForm.vue';
 import UpgradeForm from '@/components/UpgradeForm.vue';
 
 const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
