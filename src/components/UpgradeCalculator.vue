@@ -1,7 +1,7 @@
 <template>
   <div class="upgrade-calculator">
     <div class="upgrade-calculator__title">Калькулятор стоимости заточки</div>
-    <div class="upgrade-item-type-selector">
+    <div class="upgrade-item-type-selector" v-if="false">
       <div
         class="upgrade-item-type-selector__option"
         :class="{ selected: isArmorItemTypeSelected }"
@@ -35,8 +35,7 @@
         <div class="upgrade-item-type-selector__option-text">Оружие</div>
       </div>
     </div>
-    <UpgradeForm :upgrade-item-type="'armor'" v-show="isArmorItemTypeSelected" />
-    <UpgradeForm :upgrade-item-type="'weapon'" v-show="isWeaponItemTypeSelected" />
+    <UpgradeForm />
   </div>
 </template>
 
@@ -57,7 +56,8 @@ function changeUpgradeItemType(type: UpgradeItemType) {
 
 <style scoped lang="scss">
 .upgrade-calculator {
-  width: 700px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 1.5rem;
   background-color: #ebebeb;
@@ -67,7 +67,7 @@ function changeUpgradeItemType(type: UpgradeItemType) {
   &__title {
     font-size: 1.4rem;
     font-weight: 700;
-    text-align: center;
+    text-align: left;
     margin-bottom: 1.5rem;
   }
 }
@@ -76,7 +76,6 @@ function changeUpgradeItemType(type: UpgradeItemType) {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
 
   &__option {
     display: flex;

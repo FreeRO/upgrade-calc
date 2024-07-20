@@ -1,49 +1,24 @@
 .form-container {
   display: flex;
-  flex-direction: column;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-top: 1rem;
+  flex-direction: row;
   width: 100%;
 }
 
-.form-input {
-  margin-bottom: 1rem;
-
-  &__label {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-  &__label-text {
-    display: inline;
-  }
-  &__input {
-    margin-left: 0.5rem;
-  }
-  &__radio-button-input {
-    margin-right: 0.3rem;
-  }
-  &__radio-button-container {
-    display: flex;
-    flex-direction: row;
-  }
-  &__radio-button-label {
-    margin-right: 1rem;
-  }
-  &__radio-button-label-text {
-  }
+.upgrade-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 3rem;
+  width: 55%;
+  flex-shrink: 0;
 }
 
 .form-calculation-results {
   background-color: #fefefe;
   border-radius: 5px;
   padding: 0.5rem;
+  margin-bottom: auto;
+  flex-grow: 1;
 
   &__title {
     font-size: 1.1rem;
@@ -60,5 +35,171 @@
     margin-right: 0.3rem;
   }
   &__value {
+  }
+}
+
+.form-input-wrapper {
+  margin-bottom: 1.1rem;
+}
+
+.form-input-label {
+  display: flex;
+  flex-direction: column;
+
+  &__text {
+    margin-bottom: 0.3rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #171e28;
+  }
+}
+
+input,
+select {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  &:focus {
+    border-color: #1c64f2;
+    box-shadow:
+      0 0 0 0px #fff,
+      0 0 0 1px #1c64f2,
+      0 0 #0000;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-color: #3b82f6;
+  }
+}
+
+input[type='number'],
+input[type='text'] {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  color: #1f2937;
+  border-radius: 0.5rem;
+  display: block;
+  width: 100%;
+  padding: 0.625rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  &:focus {
+    border-color: #3b82f6;
+  }
+}
+
+.dark input[type='number'],
+.dark input[type='text'] {
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  color: #9ca3af;
+  color: #ffffff;
+
+  &:focus {
+    border-color: #3b82f6;
+  }
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 0.75em 0.75em;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  color: #1f2937;
+  border-radius: 0.5rem;
+  display: block;
+  width: 100%;
+  padding: 0.625rem;
+  padding-right: 2.5rem;
+}
+
+.dark select {
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  color: #ffffff;
+  &::placeholder {
+    color: #9ca3af;
+  }
+}
+
+button {
+  color: #ffffff;
+  background-color: #1d4ed8;
+  font-weight: 400;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  outline: none;
+  border: none;
+  transition: background-color 0.1s ease-in-out;
+
+  &:hover {
+    background-color: #1e40af;
+  }
+  &:focus {
+    box-shadow:
+      0 0 0 0px #fff,
+      0 0 0 2px rgb(164 202 254 / 1),
+      0 0 #0000;
+  }
+
+  .dark button {
+    background-color: #2563eb;
+    &:hover {
+      background-color: #1e3a8a;
+    }
+  }
+}
+
+.button-group {
+  button {
+    color: #1f2937;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0;
+    border-right: 1px solid transparent;
+    outline: 2px solid transparent;
+    position: relative;
+    z-index: 1;
+    &:nth-of-type(1) {
+      border-radius: 0.375rem 0 0 0.375rem;
+    }
+    &:nth-last-of-type(1) {
+      border-radius: 0 0.375rem 0.375rem 0;
+      border: 1px solid #d1d5db;
+    }
+    &:only-of-type {
+      border-radius: 0.375rem;
+      border: 1px solid #d1d5db;
+    }
+    &:hover {
+      background-color: #f3f4f6;
+      color: #1d4ed8;
+    }
+    &:focus {
+      z-index: 10;
+    }
+    &.reduced-horizontal-padding {
+      padding-left: 0.85rem;
+      padding-right: 1rem;
+    }
+    &.selected {
+      z-index: 9;
+      color: #1d4ed8;
+      box-shadow:
+        0 0 0 0px #fff,
+        0 0 0 1px #1c64f2,
+        0 0 #0000;
+      border: 1px solid #1c64f2;
+      font-weight: 500;
+    }
   }
 }

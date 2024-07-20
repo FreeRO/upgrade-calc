@@ -1,32 +1,78 @@
 <template>
   <div class="form-container">
-    <form class="weapon-upgrade-form form">
-      <div class="form-input" v-if="isWeaponItemTypeSelected">
-        <label class="form-input__label">
-          <span class="form-input__label-text">Уровень оружия</span>
-          <select class="form-input__input" v-model="weaponLevel">
+    <form class="upgrade-form">
+      <div class="form-input-wrapper">
+        <div class="form-input-label">
+          <span class="form-input-label__text">Тип предмета</span>
+          <div class="button-group" role="group">
+            <button
+              :class="{ selected: isArmorItemTypeSelected }"
+              type="button"
+              role="button"
+              @click="selectUpgradeItemType('armor')"
+            >
+              Броня
+            </button>
+            <button
+              :class="{ selected: isWeaponItemTypeSelected }"
+              type="button"
+              role="button"
+              @click="selectUpgradeItemType('weapon')"
+            >
+              Оружие
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-input-wrapper" v-if="isWeaponItemTypeSelected">
+        <label class="form-input-label">
+          <span class="form-input-label__text">Уровень оружия</span>
+          <select class="form-input" v-model="weaponLevel">
             <option v-for="level in weaponLevels" :value="level" :key="level">
               {{ level }}
             </option>
           </select>
         </label>
       </div>
-      <div class="form-input">
-        <label class="form-input__label">
-          <span class="form-input__label-text">Стоимость +0 предмета</span>
-          <input class="form-input__input" type="number" v-model="itemPrice" />
+      <div class="form-input-wrapper">
+        <label class="form-input-label">
+          <span class="form-input-label__text">Стоимость +0 предмета</span>
+          <input class="form-input" type="number" v-model="itemPrice" />
         </label>
       </div>
-      <div class="form-input">
-        <label class="form-input__label">
-          {{ `Цена ${upgradeMaterialName}'a` }}
-          <input class="form-input__input" type="number" v-model="materialPrice" />
+      <div class="form-input-wrapper">
+        <label class="form-input-label">
+          <span class="form-input-label__text">{{ `Цена ${upgradeMaterialName}'a` }}</span>
+          <input class="form-input" type="number" v-model="materialPrice" />
         </label>
       </div>
-      <div class="form-input">
-        <label class="form-input__label">
-          <span class="form-input__label-text">Заточить до</span>
-          <select class="form-input__input" v-model="upgradeUntil">
+      <div class="form-input-wrapper" v-show="isWeaponItemTypeSelected">
+        <div class="form-input-label">
+          <span class="form-input-label__text">Кто точит</span>
+          <div class="button-group" role="group">
+            <button
+              :class="{ selected: isNpcUpgradeMethodSelected }"
+              type="button"
+              role="button"
+              @click="selectUpgradeMethod('npc')"
+            >
+              NPC
+            </button>
+            <button
+              :class="{ selected: isWhiteSmithUpgradeMethodSelected }"
+              type="button"
+              role="button"
+              @click="selectUpgradeMethod('whiteSmith')"
+            >
+              Mastersmith с 70 джобом
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-input-wrapper">
+        <label class="form-input-label">
+          <span class="form-input-label__text">Заточить до</span>
+          <select class="form-input" v-model="upgradeUntil">
             <option value="0">Не выбрано</option>
             <option v-for="level in upgradeLevels" :value="level" :key="level">
               {{ '+' + level }}
@@ -34,57 +80,47 @@
           </select>
         </label>
       </div>
-      <div class="form-input">
-        <label class="form-input__label">
-          <span class="form-input__label-text"
+      <div class="form-input-wrapper" v-show="isEnrichedMaterialUsagePossible">
+        <div class="form-input-label">
+          <span class="form-input-label__text"
             >Использовать {{ enrichedMaterialName }} c заточки на...</span
           >
-          <select class="form-input__input" v-model="enrichedMaterialUsedFrom">
-            <option :value="-1">Не использовать</option>
-            <option
+          <div class="button-group" role="group">
+            <button
+              :class="{ selected: enrichedMaterialUsedFrom === -1 }"
+              :key="-1"
+              type="button"
+              role="button"
+              @click="selectEnrichedMaterialUsedFrom(-1)"
+            >
+              Не использовать
+            </button>
+            <button
+              class="reduced-horizontal-padding"
+              :class="{ selected: enrichedMaterialUsedFrom === level }"
               v-for="level in possibleEnrichedMaterialUpgradeLevels"
               :value="level"
               :key="level"
+              type="button"
+              role="button"
+              @click="selectEnrichedMaterialUsedFrom(level)"
             >
               {{ '+' + level }}
-            </option>
-          </select>
-        </label>
-      </div>
-      <div class="form-input" v-show="enrichedMaterialUsed">
-        <label class="form-input__label">
-          <span class="form-input__label-text">Цена {{ enrichedMaterialName }}</span>
-          <input class="form-input__input" type="number" v-model="enrichedMaterialPrice" />
-        </label>
-      </div>
-      <div class="form-input" v-show="isWeaponItemTypeSelected">
-        <span class="form-input__label-text">Кто точит</span>
-        <div class="form-input__radio-button-container">
-          <label class="form-input__radio-button-label">
-            <input
-              class="form-input__radio-button-input"
-              type="radio"
-              v-model="upgradeMethod"
-              :value="'npc'"
-            />
-            <span class="form-input__radio-button-label-text">NPC</span>
-          </label>
-          <label class="form-input__radio-button-label">
-            <input
-              class="form-input__radio-button-input"
-              type="radio"
-              v-model="upgradeMethod"
-              :value="'whiteSmith'"
-            />
-            <span class="form-input__radio-button-label-text">White Smith 70 job lvl</span>
-          </label>
+            </button>
+          </div>
         </div>
+      </div>
+      <div class="form-input-wrapper" v-show="enrichedMaterialUsed">
+        <label class="form-input-label">
+          <span class="form-input-label__text">Цена {{ enrichedMaterialName }}</span>
+          <input class="form-input" type="number" v-model="enrichedMaterialPrice" />
+        </label>
       </div>
     </form>
     <div class="form-calculation-results">
       <div class="form-calculation-results__title">Итого</div>
       <div class="form-calculation-result">
-        <span class="form-calculation-result__key">Вещей понадобится:</span>
+        <span class="form-calculation-result__key">Предметов понадобится:</span>
         <span class="form-calculation-result__value">{{
           `${itemsRequiredCount}, стоимость ${formatNumberWithDots(itemCost)}`
         }}</span>
@@ -143,9 +179,7 @@ import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 
 type UpgradeMethod = 'npc' | 'whiteSmith';
 
-const { upgradeItemType } = defineProps<{
-  upgradeItemType: UpgradeItemType;
-}>();
+const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
 const itemPrice = ref(900000);
 const materialPrice = ref(0);
 const weaponLevel = ref(1);
@@ -154,8 +188,9 @@ const upgradeUntil = ref(0);
 const enrichedMaterialUsedFrom = ref(-1);
 const upgradeMethod = ref<UpgradeMethod>('npc');
 
-const isArmorItemTypeSelected = computed(() => upgradeItemType === 'armor');
-const isWeaponItemTypeSelected = computed(() => upgradeItemType === 'weapon');
+const isArmorItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'armor');
+const isWeaponItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'weapon');
+const isNpcUpgradeMethodSelected = computed(() => upgradeMethod.value === 'npc');
 const isWhiteSmithUpgradeMethodSelected = computed(() => upgradeMethod.value === 'whiteSmith');
 
 const enrichedMaterial = computed<UpgradeMaterial | null>(() => {
@@ -265,6 +300,10 @@ const possibleEnrichedMaterialUpgradeLevels = computed(() => {
   return upgradeLevels.slice(firstRiskyUpgradeLevelIndex, upgradeUntilIndex.value + 1);
 });
 
+const isEnrichedMaterialUsagePossible = computed(() => {
+  return possibleEnrichedMaterialUpgradeLevels.value.length > 0;
+});
+
 const defaultUpgradeMaterialRequiredCount = computed(() => {
   return calculateRequiredUpgradeMaterials(defaultMaterialUpgradeProbabilities.value);
 });
@@ -305,6 +344,18 @@ const totalUpgradeCost = computed(() => {
     0
   );
 });
+
+function selectUpgradeMethod(method: UpgradeMethod) {
+  upgradeMethod.value = method;
+}
+
+function selectEnrichedMaterialUsedFrom(upgradeLevel: number) {
+  enrichedMaterialUsedFrom.value = upgradeLevel;
+}
+
+function selectUpgradeItemType(type: UpgradeItemType) {
+  selectedUpgradeItemType.value = type;
+}
 
 watch(upgradeUntil, (newVal) => {
   if (!enrichedMaterialUsed.value) {
