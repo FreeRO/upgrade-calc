@@ -21,32 +21,38 @@ const upgradeMaterials: UpgradeMaterial[] = [
   {
     id: 'elu',
     name: 'Elunium',
-    price: 0
+    price: 0,
+    imageName: 'elu.gif'
   },
   {
     id: 'enriched-elu',
     name: 'Enriched Elunium',
-    price: 0
+    price: 0,
+    imageName: 'enriched-elu.gif'
   },
   {
     id: 'pha',
     name: 'Pharcon',
-    price: 200
+    price: 200,
+    imageName: 'pharcon.gif'
   },
   {
     id: 'emv',
     name: 'Emveretarcon',
-    price: 1000
+    price: 1000,
+    imageName: 'emver.gif'
   },
   {
     id: 'ori',
     name: 'Oridecon',
-    price: 0
+    price: 0,
+    imageName: 'ori.gif'
   },
   {
     id: 'enriched-ori',
     name: 'Enriched Oridecon',
-    price: 0
+    price: 0,
+    imageName: 'enriched-ori.gif'
   }
 ];
 

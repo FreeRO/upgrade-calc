@@ -6,20 +6,40 @@
           <span class="form-input-label__text">Тип предмета</span>
           <div class="button-group" role="group">
             <button
+              class="button"
               :class="{ selected: isArmorItemTypeSelected }"
               type="button"
               role="button"
               @click="selectUpgradeItemType('armor')"
             >
-              Броня
+              <div class="button__img-wrapper">
+                <img
+                  class="button__img"
+                  src="../assets/images/icon-armor.gif"
+                  alt="Armor icon"
+                  width="24"
+                  height="24"
+                />
+              </div>
+              <span class="button__text">Броня</span>
             </button>
             <button
+              class="button"
               :class="{ selected: isWeaponItemTypeSelected }"
               type="button"
               role="button"
               @click="selectUpgradeItemType('weapon')"
             >
-              Оружие
+              <div class="button__img-wrapper">
+                <img
+                  class="button__img"
+                  src="../assets/images/icon-weapon.gif"
+                  alt="Weapon icon"
+                  width="24"
+                  height="24"
+                />
+              </div>
+              <span class="button__text">Оружие</span>
             </button>
           </div>
         </div>
@@ -42,7 +62,19 @@
       </div>
       <div class="form-input-wrapper">
         <label class="form-input-label">
-          <span class="form-input-label__text">{{ `Цена ${upgradeMaterialName}'a` }}</span>
+          <span class="form-input-label__text">
+            Цена
+            <img
+              v-if="upgradeMaterialImageUrl"
+              :src="upgradeMaterialImageUrl"
+              :alt="upgradeMaterialName + ' icon'"
+              width="24"
+              height="24"
+              class="upgrade-material-image"
+            />
+            <span class="upgrade-material-name">{{ upgradeMaterialName }}</span
+            >'a
+          </span>
           <input class="form-input" type="number" v-model="materialPrice" />
         </label>
       </div>
@@ -71,7 +103,7 @@
       </div>
       <div class="form-input-wrapper">
         <label class="form-input-label">
-          <span class="form-input-label__text">Заточить до</span>
+          <span class="form-input-label__text">Заточка до</span>
           <select class="form-input" v-model="upgradeUntil">
             <option value="0">Не выбрано</option>
             <option v-for="level in upgradeLevels" :value="level" :key="level">
@@ -82,8 +114,18 @@
       </div>
       <div class="form-input-wrapper" v-show="isEnrichedMaterialUsagePossible">
         <div class="form-input-label">
-          <span class="form-input-label__text"
-            >Использовать {{ enrichedMaterialName }} c заточки на...</span
+          <span class="form-input-label__text">
+            Использовать
+            <img
+              v-if="enrichedMaterialImageUrl"
+              :src="enrichedMaterialImageUrl"
+              :alt="enrichedMaterialName + ' icon'"
+              width="24"
+              height="24"
+              class="upgrade-material-image"
+            />
+            <span class="upgrade-material-name">{{ enrichedMaterialName }}</span>
+            c заточки на...</span
           >
           <div class="button-group" role="group">
             <button
@@ -112,7 +154,18 @@
       </div>
       <div class="form-input-wrapper" v-show="enrichedMaterialUsed">
         <label class="form-input-label">
-          <span class="form-input-label__text">Цена {{ enrichedMaterialName }}</span>
+          <span class="form-input-label__text">
+            Цена
+            <img
+              v-if="enrichedMaterialImageUrl"
+              :src="enrichedMaterialImageUrl"
+              :alt="enrichedMaterialName + ' icon'"
+              width="24"
+              height="24"
+              class="upgrade-material-image"
+            />
+            <span class="upgrade-material-name">{{ enrichedMaterialName }}</span></span
+          >
           <input class="form-input" type="number" v-model="enrichedMaterialPrice" />
         </label>
       </div>
@@ -134,7 +187,7 @@
         }}</span>
       </div>
       <div class="form-calculation-result" v-show="enrichedMaterialUsed">
-        <span class="form-calculation-result__key">Enriched Oridecon'ов понадобится:</span>
+        <span class="form-calculation-result__key">{{ enrichedMaterialName }}'ов понадобится:</span>
         <span class="form-calculation-result__value">{{
           `${enrichedMaterialRequiredCount}, стоимость ${formatNumberWithDots(enrichedMaterialCost)}`
         }}</span>
@@ -204,6 +257,13 @@ const enrichedMaterialName = computed(() => {
   return enrichedMaterial.value?.name ?? '';
 });
 
+const enrichedMaterialImageUrl = computed(() => {
+  if (!enrichedMaterial.value) {
+    return '';
+  }
+  return new URL(`../assets/images/${enrichedMaterial.value.imageName}`, import.meta.url).href;
+});
+
 const upgradeData = computed<WeaponUpgradeLevelData | ArmorUpgradeData>(() => {
   if (isArmorItemTypeSelected.value) {
     return armorUpgradeData;
@@ -218,6 +278,13 @@ const upgradeMaterial = computed<UpgradeMaterial | null>(() => {
 
 const upgradeMaterialName = computed(() => {
   return upgradeMaterial.value?.name ?? '';
+});
+
+const upgradeMaterialImageUrl = computed(() => {
+  if (!upgradeMaterial.value) {
+    return '';
+  }
+  return new URL(`../assets/images/${upgradeMaterial.value.imageName}`, import.meta.url).href;
 });
 
 const enrichedMaterialUsed = computed(() => {
@@ -383,4 +450,13 @@ watch(
 );
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.upgrade-material-image {
+  margin-bottom: -0.3rem;
+  margin-right: 0.3rem;
+}
+.upgrade-material-name {
+  font-weight: 600;
+  display: inline;
+}
+</style>
