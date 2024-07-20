@@ -286,6 +286,9 @@ const enrichedMaterialCost = computed(() => {
 });
 
 const npcComission = computed(() => {
+  if (isWeaponItemTypeSelected.value && isWhiteSmithUpgradeMethodSelected.value) {
+    return 0;
+  }
   const defaultUpgradeMaterialComission =
     defaultUpgradeMaterialRequiredCount.value * upgradeData.value.npcUpgradePrice;
   const erichedOriComission =
