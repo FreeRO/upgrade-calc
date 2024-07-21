@@ -307,15 +307,15 @@ import type Settings from '@/interfaces/local-storage/Settings';
 type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';
 
-const showUpgradeMethodImages = ref(false);
 const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
 const itemPrice = ref(900000);
 const defaultMaterialPrice = ref(0);
 const weaponLevel = ref(1);
-const enrichedMaterialPrice = ref(2500000);
+const enrichedMaterialPrice = ref(0);
 const upgradeUntil = ref(0);
 const enrichedMaterialUsedFrom = ref(-1);
 const upgradeMethod = ref<UpgradeMethod>('npc');
+const showUpgradeMethodImages = ref(false);
 
 const isArmorItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'armor');
 const isWeaponItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'weapon');
@@ -561,6 +561,20 @@ function getMaterialPriceFromLocalStorageById(id: string) {
   const materialPrice = materialPrices.find((mp) => mp.id === id);
   return materialPrice?.price ?? null;
 }
+
+function resetForm() {
+  itemPrice.value = 0;
+  defaultMaterialPrice.value = 0;
+  weaponLevel.value = 1;
+  enrichedMaterialPrice.value = 0;
+  upgradeUntil.value = 0;
+  enrichedMaterialUsedFrom.value = -1;
+  upgradeMethod.value = 'npc';
+}
+
+watch(selectedUpgradeItemType, () => {
+  resetForm();
+});
 
 watch(upgradeUntil, (newVal) => {
   if (!enrichedMaterialUsed.value) {
