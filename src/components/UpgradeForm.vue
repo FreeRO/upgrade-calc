@@ -216,7 +216,6 @@ import {
   npcUpgradePriceWithEnrichedMaterial,
   weaponLevels,
   upgradeMaterials,
-  type UpgradeItemType,
   armorUpgradeData
 } from '@/utils/upgrade/constants';
 import {
@@ -230,6 +229,7 @@ import type WeaponUpgradeLevelData from '@/interfaces/WeaponUpgradeLevelData';
 import type UpgradeMaterial from '@/interfaces/UpgradeMaterial';
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 
+type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';
 
 const selectedUpgradeItemType = ref<UpgradeItemType>('armor');

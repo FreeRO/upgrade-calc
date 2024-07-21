@@ -2,8 +2,6 @@ import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 import type WeaponUpgradeData from '@/interfaces/WeaponUpgradeData';
 import type UpgradeMaterial from '@/interfaces/UpgradeMaterial';
 
-export type UpgradeItemType = 'armor' | 'weapon';
-
 const upgradeLevels: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const weaponLevels: number[] = [1, 2, 3, 4];
 const npcUpgradePriceWithEnrichedMaterial = 20000;

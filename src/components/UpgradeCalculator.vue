@@ -1,57 +1,13 @@
 <template>
   <div class="upgrade-calculator">
     <div class="upgrade-calculator__title">Калькулятор стоимости заточки</div>
-    <div class="upgrade-item-type-selector" v-if="false">
-      <div
-        class="upgrade-item-type-selector__option"
-        :class="{ selected: isArmorItemTypeSelected }"
-        @click="changeUpgradeItemType('armor')"
-      >
-        <div class="upgrade-item-type-selector__option-img-wrapper">
-          <img
-            class="upgrade-item-type-selector__option-img"
-            src="../assets/images/icon-armor.gif"
-            alt="Armor icon"
-            width="24"
-            height="24"
-          />
-        </div>
-        <div class="upgrade-item-type-selector__option-text">Броня</div>
-      </div>
-      <div
-        class="upgrade-item-type-selector__option"
-        :class="{ selected: isWeaponItemTypeSelected }"
-        @click="changeUpgradeItemType('weapon')"
-      >
-        <div class="upgrade-item-type-selector__option-img-wrapper">
-          <img
-            class="upgrade-item-type-selector__option-img"
-            src="../assets/images/icon-weapon.gif"
-            alt="Weapon icon"
-            width="24"
-            height="24"
-          />
-        </div>
-        <div class="upgrade-item-type-selector__option-text">Оружие</div>
-      </div>
-    </div>
     <UpgradeForm />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { type UpgradeItemType } from '@/utils/upgrade/constants';
 import UpgradeForm from '@/components/UpgradeForm.vue';
-
-const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
-
-const isArmorItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'armor');
-const isWeaponItemTypeSelected = computed(() => selectedUpgradeItemType.value === 'weapon');
-
-function changeUpgradeItemType(type: UpgradeItemType) {
-  selectedUpgradeItemType.value = type;
-}
 </script>
 
 <style scoped lang="scss">
