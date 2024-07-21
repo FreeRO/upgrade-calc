@@ -16,25 +16,43 @@
 .form-calculation-results {
   background-color: #fefefe;
   border-radius: 5px;
-  padding: 0.5rem;
+  padding: 1rem 1.5rem;
   margin-bottom: auto;
   flex-grow: 1;
 
   &__title {
-    font-size: 1.1rem;
-    font-weight: 600;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
     margin-bottom: 0.5rem;
+  }
+  &__total-cost {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1c64f2;
   }
 }
 
 .form-calculation-result {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.5rem;
 
   &__key {
+    display: flex;
+    margin-right: 0.3rem;
+  }
+  &__key-image {
     margin-right: 0.3rem;
   }
   &__value {
+    font-weight: 500;
   }
 }
 
@@ -84,6 +102,9 @@ input[type='text'] {
   &:focus {
     border-color: #3b82f6;
   }
+  &:hover {
+    background-color: #fcfcfd;
+  }
 }
 
 .dark input[type='number'],
@@ -114,6 +135,9 @@ select {
   width: 100%;
   padding: 0.625rem;
   padding-right: 2.5rem;
+  &:hover {
+    background-color: #fcfcfd;
+  }
 }
 
 .dark select {
@@ -171,6 +195,9 @@ button {
     flex-direction: row;
     margin-bottom: auto;
     margin-right: 0.5rem;
+    &.refine-method {
+      width: 2rem;
+    }
   }
   &__img {
     width: 100%;

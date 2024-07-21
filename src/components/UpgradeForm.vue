@@ -83,12 +83,22 @@
           <span class="form-input-label__text">Кто точит</span>
           <div class="button-group" role="group">
             <button
+              class="button"
               :class="{ selected: isNpcUpgradeMethodSelected }"
               type="button"
               role="button"
               @click="selectUpgradeMethod('npc')"
             >
-              NPC
+              <div v-if="showUpgradeMethodImages" class="button__img-wrapper refine-method">
+                <img
+                  class="button__img"
+                  src="../assets/images/refine-master.png"
+                  alt="mastersmith icon"
+                  width="31"
+                  height="50"
+                />
+              </div>
+              <span class="button__text">NPC</span>
             </button>
             <button
               :class="{ selected: isWhiteSmithUpgradeMethodSelected }"
@@ -96,7 +106,16 @@
               role="button"
               @click="selectUpgradeMethod('whiteSmith')"
             >
-              Mastersmith с 70 джобом
+              <div v-if="showUpgradeMethodImages" class="button__img-wrapper refine-method">
+                <img
+                  class="button__img"
+                  src="../assets/images/mastersmith.png"
+                  alt="mastersmith icon"
+                  width="21"
+                  height="50"
+                />
+              </div>
+              <span class="button__text">Mastersmith Job Lv. 70</span>
             </button>
           </div>
         </div>
@@ -171,38 +190,81 @@
       </div>
     </form>
     <div class="form-calculation-results">
-      <div class="form-calculation-results__title">Итого</div>
-      <div class="form-calculation-result">
-        <span class="form-calculation-result__key">Предметов понадобится:</span>
-        <span class="form-calculation-result__value">{{
-          `${itemsRequiredCount}, стоимость ${formatNumberWithDots(itemCost)}`
-        }}</span>
+      <div class="form-calculation-results__title">Средняя стоимость заточки</div>
+      <div class="form-calculation-results__total-cost">
+        {{ formatNumberWithDots(totalUpgradeCost) }}
       </div>
       <div class="form-calculation-result">
-        <span class="form-calculation-result__key">{{
-          `${upgradeMaterialName}'ов понадобится:`
-        }}</span>
-        <span class="form-calculation-result__value">{{
-          `${defaultUpgradeMaterialRequiredCount}, стоимость ${formatNumberWithDots(defaultUpgradeMaterialCost)}`
-        }}</span>
-      </div>
-      <div class="form-calculation-result" v-show="enrichedMaterialUsed">
-        <span class="form-calculation-result__key">{{ enrichedMaterialName }}'ов понадобится:</span>
-        <span class="form-calculation-result__value">{{
-          `${enrichedMaterialRequiredCount}, стоимость ${formatNumberWithDots(enrichedMaterialCost)}`
-        }}</span>
+        <span class="form-calculation-result__key">
+          <img
+            v-if="isArmorItemTypeSelected"
+            class="form-calculation-result__key-image"
+            src="../assets/images/icon-armor.gif"
+            alt="Armor icon"
+            width="24"
+            height="24"
+          />
+          <img
+            v-if="isWeaponItemTypeSelected"
+            class="form-calculation-result__key-image"
+            src="../assets/images/icon-weapon.gif"
+            alt="Weapon icon"
+            width="24"
+            height="24"
+          />
+          <span>
+            x
+            {{ itemsRequiredCount }}
+          </span>
+        </span>
+        <span class="form-calculation-result__value">{{ formatNumberWithDots(itemCost) }}</span>
       </div>
       <div class="form-calculation-result">
-        <span class="form-calculation-result__key">Комиссия NPC:</span>
+        <span class="form-calculation-result__key">
+          <img
+            v-if="upgradeMaterialImageUrl"
+            :src="upgradeMaterialImageUrl"
+            :alt="upgradeMaterialName + ' icon'"
+            width="24"
+            height="24"
+            class="upgrade-material-image"
+          />
+          <span>
+            x
+            {{ defaultUpgradeMaterialRequiredCount }}
+          </span>
+        </span>
+        <span class="form-calculation-result__value">{{
+          formatNumberWithDots(defaultUpgradeMaterialCost)
+        }}</span>
+      </div>
+      <div class="form-calculation-result" v-if="enrichedMaterialUsed">
+        <span class="form-calculation-result__key">
+          <img
+            v-if="enrichedMaterialImageUrl"
+            :src="enrichedMaterialImageUrl"
+            :alt="enrichedMaterialName + ' icon'"
+            width="24"
+            height="24"
+            class="upgrade-material-image"
+          />
+          <span>
+            x
+            {{ enrichedMaterialRequiredCount }}
+          </span>
+        </span>
+        <span class="form-calculation-result__value">{{
+          formatNumberWithDots(enrichedMaterialCost)
+        }}</span>
+      </div>
+      <div
+        class="form-calculation-result"
+        v-if="isArmorItemTypeSelected || isNpcUpgradeMethodSelected"
+      >
+        <span class="form-calculation-result__key">Комиссия NPC</span>
         <span class="form-calculation-result__value">
           {{ formatNumberWithDots(npcComission) }}
         </span>
-      </div>
-      <div class="form-calculation-result">
-        <span class="form-calculation-result__key">Общая стоимость:</span>
-        <span class="form-calculation-result__value">{{
-          formatNumberWithDots(totalUpgradeCost)
-        }}</span>
       </div>
     </div>
   </div>
@@ -232,6 +294,7 @@ import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';
 
+const showUpgradeMethodImages = ref(false);
 const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
 const itemPrice = ref(900000);
 const materialPrice = ref(0);
