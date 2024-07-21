@@ -65,17 +65,22 @@
           <span class="form-input-label__text">
             Цена
             <img
-              v-if="upgradeMaterialImageUrl"
-              :src="upgradeMaterialImageUrl"
-              :alt="upgradeMaterialName + ' icon'"
+              v-if="defaultUpgradeMaterialImageUrl"
+              :src="defaultUpgradeMaterialImageUrl"
+              :alt="defaultUpgradeMaterialName + ' icon'"
               width="24"
               height="24"
               class="upgrade-material-image"
             />
-            <span class="upgrade-material-name">{{ upgradeMaterialName }}</span
+            <span class="upgrade-material-name">{{ defaultUpgradeMaterialName }}</span
             >'a
           </span>
-          <input class="form-input" type="number" v-model="materialPrice" />
+          <input
+            class="form-input"
+            type="number"
+            v-model="defaultMaterialPrice"
+            @blur="saveDefaultMaterialPriceToLocalStorage"
+          />
         </label>
       </div>
       <div class="form-input-wrapper" v-show="isWeaponItemTypeSelected">
@@ -185,7 +190,12 @@
             />
             <span class="upgrade-material-name">{{ enrichedMaterialName }}</span></span
           >
-          <input class="form-input" type="number" v-model="enrichedMaterialPrice" />
+          <input
+            class="form-input"
+            type="number"
+            v-model="enrichedMaterialPrice"
+            @blur="saveEnrichedMaterialPriceToLocalStorage"
+          />
         </label>
       </div>
     </form>
@@ -222,9 +232,9 @@
       <div class="form-calculation-result">
         <span class="form-calculation-result__key">
           <img
-            v-if="upgradeMaterialImageUrl"
-            :src="upgradeMaterialImageUrl"
-            :alt="upgradeMaterialName + ' icon'"
+            v-if="defaultUpgradeMaterialImageUrl"
+            :src="defaultUpgradeMaterialImageUrl"
+            :alt="defaultUpgradeMaterialName + ' icon'"
             width="24"
             height="24"
             class="upgrade-material-image"
@@ -291,6 +301,8 @@ import type WeaponUpgradeLevelData from '@/interfaces/WeaponUpgradeLevelData';
 import type UpgradeMaterial from '@/interfaces/UpgradeMaterial';
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 import type RequiredUpgradeMaterials from '@/interfaces/RequiredUpgradeMaterials';
+import type MaterialPrice from '@/interfaces/local-storage/MaterialPrice';
+import type Settings from '@/interfaces/local-storage/Settings';
 
 type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';
@@ -298,7 +310,7 @@ type UpgradeMethod = 'npc' | 'whiteSmith';
 const showUpgradeMethodImages = ref(false);
 const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
 const itemPrice = ref(900000);
-const materialPrice = ref(0);
+const defaultMaterialPrice = ref(0);
 const weaponLevel = ref(1);
 const enrichedMaterialPrice = ref(2500000);
 const upgradeUntil = ref(0);
@@ -336,19 +348,20 @@ const upgradeData = computed<WeaponUpgradeLevelData | ArmorUpgradeData>(() => {
   return weaponUpgradeData[levelKey];
 });
 
-const upgradeMaterial = computed<UpgradeMaterial | null>(() => {
+const defaultUpgradeMaterial = computed<UpgradeMaterial | null>(() => {
   return upgradeMaterials.find((m) => m.id === upgradeData.value.materialId) ?? null;
 });
 
-const upgradeMaterialName = computed(() => {
-  return upgradeMaterial.value?.name ?? '';
+const defaultUpgradeMaterialName = computed(() => {
+  return defaultUpgradeMaterial.value?.name ?? '';
 });
 
-const upgradeMaterialImageUrl = computed(() => {
-  if (!upgradeMaterial.value) {
+const defaultUpgradeMaterialImageUrl = computed(() => {
+  if (!defaultUpgradeMaterial.value) {
     return '';
   }
-  return new URL(`../assets/images/${upgradeMaterial.value.imageName}`, import.meta.url).href;
+  return new URL(`../assets/images/${defaultUpgradeMaterial.value.imageName}`, import.meta.url)
+    .href;
 });
 
 const enrichedMaterialUsed = computed(() => {
@@ -455,7 +468,10 @@ const itemCost = computed(() => {
 });
 
 const defaultUpgradeMaterialCost = computed(() => {
-  return roundToDecimalPlace(defaultUpgradeMaterialRequiredCount.value * materialPrice.value, 0);
+  return roundToDecimalPlace(
+    defaultUpgradeMaterialRequiredCount.value * defaultMaterialPrice.value,
+    0
+  );
 });
 
 const enrichedMaterialCost = computed(() => {
@@ -495,6 +511,57 @@ function selectUpgradeItemType(type: UpgradeItemType) {
   selectedUpgradeItemType.value = type;
 }
 
+function saveMaterialPriceToLocalStorage(materialPrice: MaterialPrice) {
+  const materialPrices = getMaterialPricesFromLocalStorage();
+  const priceToUpdate = materialPrices.find((mp) => mp.id === materialPrice.id);
+  if (priceToUpdate) {
+    priceToUpdate.price = materialPrice.price;
+  } else {
+    materialPrices.push(materialPrice);
+  }
+  try {
+    localStorage.setItem('materialPrices', JSON.stringify(materialPrices));
+  } catch (error) {
+    console.error('Invalid JSON for material prices', error);
+  }
+}
+
+function saveEnrichedMaterialPriceToLocalStorage() {
+  if (!enrichedMaterial.value) {
+    return;
+  }
+  const materialPrice: MaterialPrice = {
+    id: enrichedMaterial.value?.id,
+    price: enrichedMaterialPrice.value
+  };
+  saveMaterialPriceToLocalStorage(materialPrice);
+}
+
+function saveDefaultMaterialPriceToLocalStorage() {
+  if (!defaultUpgradeMaterial.value) {
+    return;
+  }
+  const materialPrice: MaterialPrice = {
+    id: defaultUpgradeMaterial.value?.id,
+    price: defaultMaterialPrice.value
+  };
+  saveMaterialPriceToLocalStorage(materialPrice);
+}
+
+function getMaterialPricesFromLocalStorage() {
+  const materialPricesString = localStorage.getItem('materialPrices');
+  const materialPrices = materialPricesString
+    ? (JSON.parse(materialPricesString) as MaterialPrice[])
+    : [];
+  return materialPrices;
+}
+
+function getMaterialPriceFromLocalStorageById(id: string) {
+  const materialPrices = getMaterialPricesFromLocalStorage();
+  const materialPrice = materialPrices.find((mp) => mp.id === id);
+  return materialPrice?.price ?? null;
+}
+
 watch(upgradeUntil, (newVal) => {
   if (!enrichedMaterialUsed.value) {
     return;
@@ -505,9 +572,13 @@ watch(upgradeUntil, (newVal) => {
 });
 
 watch(
-  upgradeMaterial,
+  defaultUpgradeMaterial,
   (newVal) => {
-    materialPrice.value = newVal?.price ?? 0;
+    if (!newVal) {
+      return;
+    }
+    const price = getMaterialPriceFromLocalStorageById(newVal.id);
+    defaultMaterialPrice.value = price ?? newVal.price;
   },
   { immediate: true }
 );
@@ -515,7 +586,11 @@ watch(
 watch(
   enrichedMaterial,
   (newVal) => {
-    enrichedMaterialPrice.value = newVal?.price ?? 0;
+    if (!newVal) {
+      return;
+    }
+    const price = getMaterialPriceFromLocalStorageById(newVal.id);
+    enrichedMaterialPrice.value = price ?? newVal.price;
   },
   { immediate: true }
 );
