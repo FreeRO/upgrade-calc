@@ -281,7 +281,7 @@ import {
   armorUpgradeData
 } from '@/utils/upgrade/constants';
 import {
-  calculateRequiredUpgradeMaterials,
+  calculateCombinedUpgradeMaterials,
   calculateUpgradeAttempts,
   formatNumberWithDots,
   roundToDecimalPlace
@@ -290,6 +290,7 @@ import type WeaponUpgradeData from '@/interfaces/WeaponUpgradeData';
 import type WeaponUpgradeLevelData from '@/interfaces/WeaponUpgradeLevelData';
 import type UpgradeMaterial from '@/interfaces/UpgradeMaterial';
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
+import type RequiredUpgradeMaterials from '@/interfaces/RequiredUpgradeMaterials';
 
 type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';
@@ -434,12 +435,19 @@ const isEnrichedMaterialUsagePossible = computed(() => {
   return possibleEnrichedMaterialUpgradeLevels.value.length > 0;
 });
 
+const requiredUpgradeMaterials = computed<RequiredUpgradeMaterials>(() => {
+  return calculateCombinedUpgradeMaterials(
+    defaultMaterialUpgradeProbabilities.value,
+    enrichedMaterialUpgradeProbabilities.value
+  );
+});
+
 const defaultUpgradeMaterialRequiredCount = computed(() => {
-  return calculateRequiredUpgradeMaterials(defaultMaterialUpgradeProbabilities.value);
+  return requiredUpgradeMaterials.value.defaultMaterialCount;
 });
 
 const enrichedMaterialRequiredCount = computed(() => {
-  return calculateRequiredUpgradeMaterials(enrichedMaterialUpgradeProbabilities.value);
+  return requiredUpgradeMaterials.value.enrichedMaterialCount;
 });
 
 const itemCost = computed(() => {

@@ -1,3 +1,5 @@
+import type RequiredUpgradeMaterials from '@/interfaces/RequiredUpgradeMaterials';
+
 function calculateUpgradeAttempts(chances: number[]) {
   if (chances.length === 0) {
     return 0;
@@ -6,45 +8,59 @@ function calculateUpgradeAttempts(chances: number[]) {
   return roundToDecimalPlace(1 / cumulativeChance, 1);
 }
 
-function calculateRequiredUpgradeMaterials(chances: number[]) {
-  if (chances.length === 0) {
+function calculateUpgradeMaterials(upgradeChances: number[]) {
+  if (upgradeChances.length === 0) {
     return 0;
   }
-  if (chances.every((x) => x === 1)) {
-    return chances.length;
+  if (upgradeChances.every((x) => x === 1)) {
+    return upgradeChances.length;
   }
-  const minimumMaterialAmountSpentOnEachRiskyUpgrade =
-    1 + chances.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
-  const upgradeAttempts = calculateUpgradeAttempts(chances);
-  const minimumMaterialAmountRequiredForFirstRiskyUpgrade =
-    upgradeAttempts * minimumMaterialAmountSpentOnEachRiskyUpgrade;
+  const minMaterialPerRiskyUpgrade =
+    1 + upgradeChances.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
+  const totalUpgradeAttempts = calculateUpgradeAttempts(upgradeChances);
+  const minMaterialForFirstRiskyUpgrade = totalUpgradeAttempts * minMaterialPerRiskyUpgrade;
 
-  if (chances.length === 1) {
-    return roundToDecimalPlace(minimumMaterialAmountRequiredForFirstRiskyUpgrade, 1);
+  if (upgradeChances.length === 1) {
+    return roundToDecimalPlace(minMaterialForFirstRiskyUpgrade, 1);
   }
 
-  const materialsRequiredForEachRiskyUpgrade: number[] = [
-    minimumMaterialAmountRequiredForFirstRiskyUpgrade
-  ];
-  let cumulativeUpgradeChance = 1;
-  for (const [index, chance] of chances.entries()) {
+  const materialsPerRiskyUpgrade: number[] = [minMaterialForFirstRiskyUpgrade];
+  let cumulativeChance = 1;
+  for (const [index, chance] of upgradeChances.entries()) {
     if (chance === 1) {
       continue;
     }
-    const isLast = index === chances.length - 1;
+    const isLast = index === upgradeChances.length - 1;
     if (isLast) {
       continue;
     }
 
-    cumulativeUpgradeChance *= chance;
-    const materialsRequiredForCurrentChance = upgradeAttempts * cumulativeUpgradeChance;
-    materialsRequiredForEachRiskyUpgrade.push(materialsRequiredForCurrentChance);
+    cumulativeChance *= chance;
+    const materialsRequiredForCurrentChance = totalUpgradeAttempts * cumulativeChance;
+    materialsPerRiskyUpgrade.push(materialsRequiredForCurrentChance);
   }
-  const requiredUpgradeMaterials = materialsRequiredForEachRiskyUpgrade.reduce(
-    (acc, x) => acc + x,
-    0
+  const totalRequiredMaterials = materialsPerRiskyUpgrade.reduce((acc, x) => acc + x, 0);
+  return roundToDecimalPlace(totalRequiredMaterials, 1);
+}
+
+function calculateCombinedUpgradeMaterials(defaultChances: number[], enrichedChances: number[]) {
+  const totalRequiredMaterials: RequiredUpgradeMaterials = {
+    defaultMaterialCount: 0,
+    enrichedMaterialCount: 0
+  };
+  totalRequiredMaterials.defaultMaterialCount = calculateUpgradeMaterials(defaultChances);
+  if (enrichedChances.length === 0) {
+    return totalRequiredMaterials;
+  }
+  const enrichedMaterialCount = calculateUpgradeMaterials(enrichedChances);
+  const enrichedMaterialUpgradeAttempts = calculateUpgradeAttempts(enrichedChances);
+  const adjustedDefaultMaterialCount = roundToDecimalPlace(
+    totalRequiredMaterials.defaultMaterialCount * enrichedMaterialUpgradeAttempts,
+    1
   );
-  return roundToDecimalPlace(requiredUpgradeMaterials, 1);
+  totalRequiredMaterials.defaultMaterialCount = adjustedDefaultMaterialCount;
+  totalRequiredMaterials.enrichedMaterialCount = enrichedMaterialCount;
+  return totalRequiredMaterials;
 }
 
 function roundToDecimalPlace(num: number, decimalPlaces: number) {
@@ -71,7 +87,7 @@ function formatNumberWithDots(num: number): string {
 
 export {
   calculateUpgradeAttempts,
-  calculateRequiredUpgradeMaterials,
+  calculateCombinedUpgradeMaterials,
   roundToDecimalPlace,
   formatNumberWithDots
 };
