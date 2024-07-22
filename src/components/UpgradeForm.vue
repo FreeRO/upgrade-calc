@@ -204,11 +204,12 @@
       <div class="form-calculation-results__total-cost">
         {{ formatNumberWithDots(totalUpgradeCost) }}
       </div>
+      <div class="form-calculation-results__subtitle">Разбивка стоимости:</div>
       <div class="form-calculation-result">
-        <span class="form-calculation-result__key">
+        <div class="form-calculation-result-key">
           <img
             v-if="isArmorItemTypeSelected"
-            class="form-calculation-result__key-image"
+            class="form-calculation-result-key__image"
             src="../assets/images/icon-armor.gif"
             alt="Armor icon"
             width="24"
@@ -216,31 +217,31 @@
           />
           <img
             v-if="isWeaponItemTypeSelected"
-            class="form-calculation-result__key-image"
+            class="form-calculation-result-key__image"
             src="../assets/images/icon-weapon.gif"
             alt="Weapon icon"
             width="24"
             height="24"
           />
+          <div class="form-calculation-result-key__multiplier-icon"></div>
           <span>
-            x
             {{ itemsRequiredCount }}
           </span>
-        </span>
+        </div>
         <span class="form-calculation-result__value">{{ formatNumberWithDots(itemCost) }}</span>
       </div>
       <div class="form-calculation-result">
-        <span class="form-calculation-result__key">
+        <span class="form-calculation-result-key">
           <img
             v-if="defaultUpgradeMaterialImageUrl"
             :src="defaultUpgradeMaterialImageUrl"
             :alt="defaultUpgradeMaterialName + ' icon'"
             width="24"
             height="24"
-            class="upgrade-material-image"
+            class="form-calculation-result-key__image"
           />
+          <div class="form-calculation-result-key__multiplier-icon"></div>
           <span>
-            x
             {{ defaultUpgradeMaterialRequiredCount }}
           </span>
         </span>
@@ -249,17 +250,17 @@
         }}</span>
       </div>
       <div class="form-calculation-result" v-if="enrichedMaterialUsed">
-        <span class="form-calculation-result__key">
+        <span class="form-calculation-result-key">
           <img
             v-if="enrichedMaterialImageUrl"
             :src="enrichedMaterialImageUrl"
             :alt="enrichedMaterialName + ' icon'"
             width="24"
             height="24"
-            class="upgrade-material-image"
+            class="form-calculation-result-key__image"
           />
+          <div class="form-calculation-result-key__multiplier-icon"></div>
           <span>
-            x
             {{ enrichedMaterialRequiredCount }}
           </span>
         </span>
@@ -271,7 +272,7 @@
         class="form-calculation-result"
         v-if="isArmorItemTypeSelected || isNpcUpgradeMethodSelected"
       >
-        <span class="form-calculation-result__key">Комиссия NPC</span>
+        <span class="form-calculation-result-key">Комиссия NPC</span>
         <span class="form-calculation-result__value">
           {{ formatNumberWithDots(npcComission) }}
         </span>
@@ -302,7 +303,8 @@ import type UpgradeMaterial from '@/interfaces/UpgradeMaterial';
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 import type RequiredUpgradeMaterials from '@/interfaces/RequiredUpgradeMaterials';
 import type MaterialPrice from '@/interfaces/local-storage/MaterialPrice';
-import type Settings from '@/interfaces/local-storage/Settings';
+import MultiplierIcon from '@/components/icons/MultiplierIcon.vue';
+import type CalculatorSettings from '@/interfaces/local-storage/CalculatorSettings';
 
 type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';

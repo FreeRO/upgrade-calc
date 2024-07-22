@@ -17,6 +17,7 @@
   background-color: #fefefe;
   border-radius: 5px;
   padding: 1rem 1.5rem;
+  padding-bottom: 0.75rem;
   margin-bottom: auto;
   flex-grow: 1;
 
@@ -25,15 +26,19 @@
     text-align: center;
     font-size: 0.9rem;
     font-weight: 500;
-    margin-bottom: 0.5rem;
   }
   &__total-cost {
     width: 100%;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: #1c64f2;
+  }
+  &__subtitle {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -44,15 +49,29 @@
   width: 100%;
   margin-bottom: 0.5rem;
 
-  &__key {
-    display: flex;
-    margin-right: 0.3rem;
-  }
-  &__key-image {
-    margin-right: 0.3rem;
-  }
   &__value {
     font-weight: 500;
+  }
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.form-calculation-result-key {
+  display: flex;
+  align-items: center;
+  margin-right: 0.3rem;
+  &__image {
+    margin-right: 0.3rem;
+  }
+  &__multiplier-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path d="M6 6 L18 18 M6 18 L18 6" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-right: 0.3rem;
   }
 }
 

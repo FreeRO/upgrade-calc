@@ -13,7 +13,7 @@ import UpgradeForm from '@/components/UpgradeForm.vue';
 <style scoped lang="scss">
 .upgrade-calculator {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 1rem 1.5rem;
   background-color: #ebebeb;
@@ -21,7 +21,7 @@ import UpgradeForm from '@/components/UpgradeForm.vue';
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 
   &__title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-align: left;
     margin-bottom: 1.5rem;
