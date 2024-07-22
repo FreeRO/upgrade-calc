@@ -12,7 +12,8 @@ const armorUpgradeData: ArmorUpgradeData = {
     npcWithEnrichedElu: [1, 1, 1, 1, 0.84, 0.64, 0.64, 0.36, 0.36, 0.19]
   },
   npcUpgradePrice: 2000,
-  materialId: 'elu'
+  defaultMaterialId: 'elu',
+  enrichedMaterialId: 'enriched-elu'
 };
 
 const upgradeMaterials: UpgradeMaterial[] = [
@@ -63,7 +64,8 @@ const weaponUpgradeData: WeaponUpgradeData = {
       whiteSmithWithEnrichedOri: [1, 1, 1, 1, 1, 1, 1, 0.86, 0.66, 0.38]
     },
     npcUpgradePrice: 50,
-    materialId: 'pha'
+    defaultMaterialId: 'pha',
+    enrichedMaterialId: 'enriched-ori'
   },
   lvl2: {
     probabilities: {
@@ -73,7 +75,8 @@ const weaponUpgradeData: WeaponUpgradeData = {
       whiteSmithWithEnrichedOri: [1, 1, 1, 1, 1, 1, 0.86, 0.66, 0.38, 0.38]
     },
     npcUpgradePrice: 200,
-    materialId: 'emv'
+    defaultMaterialId: 'emv',
+    enrichedMaterialId: 'enriched-ori'
   },
   lvl3: {
     probabilities: {
@@ -83,7 +86,8 @@ const weaponUpgradeData: WeaponUpgradeData = {
       whiteSmithWithEnrichedOri: [1, 1, 1, 1, 1, 0.86, 0.77, 0.38, 0.38, 0.38]
     },
     npcUpgradePrice: 5000,
-    materialId: 'ori'
+    defaultMaterialId: 'ori',
+    enrichedMaterialId: 'enriched-ori'
   },
   lvl4: {
     probabilities: {
@@ -93,7 +97,8 @@ const weaponUpgradeData: WeaponUpgradeData = {
       whiteSmithWithEnrichedOri: [1, 1, 1, 1, 0.86, 0.66, 0.66, 0.38, 0.38, 0.21]
     },
     npcUpgradePrice: 20000,
-    materialId: 'ori'
+    defaultMaterialId: 'ori',
+    enrichedMaterialId: 'enriched-ori'
   }
 };
 

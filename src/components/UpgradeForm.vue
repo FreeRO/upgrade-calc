@@ -65,14 +65,14 @@
           <span class="form-input-label__text">
             Цена
             <img
-              v-if="defaultUpgradeMaterialImageUrl"
-              :src="defaultUpgradeMaterialImageUrl"
-              :alt="defaultUpgradeMaterialName + ' icon'"
+              v-if="defaultMaterialImageUrl"
+              :src="defaultMaterialImageUrl"
+              :alt="defaultMaterialName + ' icon'"
               width="24"
               height="24"
               class="upgrade-material-image"
             />
-            <span class="upgrade-material-name">{{ defaultUpgradeMaterialName }}</span
+            <span class="upgrade-material-name">{{ defaultMaterialName }}</span
             >'a
           </span>
           <input
@@ -176,7 +176,7 @@
           </div>
         </div>
       </div>
-      <div class="form-input-wrapper" v-show="enrichedMaterialUsed">
+      <div class="form-input-wrapper" v-show="isEnrichedMaterialUsed">
         <label class="form-input-label">
           <span class="form-input-label__text">
             Цена
@@ -233,23 +233,23 @@
       <div class="form-calculation-result">
         <span class="form-calculation-result-key">
           <img
-            v-if="defaultUpgradeMaterialImageUrl"
-            :src="defaultUpgradeMaterialImageUrl"
-            :alt="defaultUpgradeMaterialName + ' icon'"
+            v-if="defaultMaterialImageUrl"
+            :src="defaultMaterialImageUrl"
+            :alt="defaultMaterialName + ' icon'"
             width="24"
             height="24"
             class="form-calculation-result-key__image"
           />
           <div class="form-calculation-result-key__multiplier-icon"></div>
           <span>
-            {{ defaultUpgradeMaterialRequiredCount }}
+            {{ defaultMaterialRequiredCount }}
           </span>
         </span>
         <span class="form-calculation-result__value">{{
-          formatNumberWithDots(defaultUpgradeMaterialCost)
+          formatNumberWithDots(defaultMaterialCost)
         }}</span>
       </div>
-      <div class="form-calculation-result" v-if="enrichedMaterialUsed">
+      <div class="form-calculation-result" v-if="isEnrichedMaterialUsed">
         <span class="form-calculation-result-key">
           <img
             v-if="enrichedMaterialImageUrl"
@@ -303,7 +303,6 @@ import type UpgradeMaterial from '@/interfaces/UpgradeMaterial';
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 import type RequiredUpgradeMaterials from '@/interfaces/RequiredUpgradeMaterials';
 import type MaterialPrice from '@/interfaces/local-storage/MaterialPrice';
-import MultiplierIcon from '@/components/icons/MultiplierIcon.vue';
 import type CalculatorSettings from '@/interfaces/local-storage/CalculatorSettings';
 
 type UpgradeItemType = 'armor' | 'weapon';
@@ -324,11 +323,16 @@ const isWeaponItemTypeSelected = computed(() => selectedUpgradeItemType.value ==
 const isNpcUpgradeMethodSelected = computed(() => upgradeMethod.value === 'npc');
 const isWhiteSmithUpgradeMethodSelected = computed(() => upgradeMethod.value === 'whiteSmith');
 
-const enrichedMaterial = computed<UpgradeMaterial | null>(() => {
+const upgradeData = computed<WeaponUpgradeLevelData | ArmorUpgradeData>(() => {
   if (isArmorItemTypeSelected.value) {
-    return upgradeMaterials.find((m) => m.id === 'enriched-elu') ?? null;
+    return armorUpgradeData;
   }
-  return upgradeMaterials.find((m) => m.id === 'enriched-ori') ?? null;
+  const levelKey = ('lvl' + weaponLevel.value) as keyof WeaponUpgradeData;
+  return weaponUpgradeData[levelKey];
+});
+
+const enrichedMaterial = computed<UpgradeMaterial | null>(() => {
+  return upgradeMaterials.find((m) => m.id === upgradeData.value.enrichedMaterialId) ?? null;
 });
 
 const enrichedMaterialName = computed(() => {
@@ -342,31 +346,22 @@ const enrichedMaterialImageUrl = computed(() => {
   return new URL(`../assets/images/${enrichedMaterial.value.imageName}`, import.meta.url).href;
 });
 
-const upgradeData = computed<WeaponUpgradeLevelData | ArmorUpgradeData>(() => {
-  if (isArmorItemTypeSelected.value) {
-    return armorUpgradeData;
-  }
-  const levelKey = ('lvl' + weaponLevel.value) as keyof WeaponUpgradeData;
-  return weaponUpgradeData[levelKey];
+const defaultMaterial = computed<UpgradeMaterial | null>(() => {
+  return upgradeMaterials.find((m) => m.id === upgradeData.value.defaultMaterialId) ?? null;
 });
 
-const defaultUpgradeMaterial = computed<UpgradeMaterial | null>(() => {
-  return upgradeMaterials.find((m) => m.id === upgradeData.value.materialId) ?? null;
+const defaultMaterialName = computed(() => {
+  return defaultMaterial.value?.name ?? '';
 });
 
-const defaultUpgradeMaterialName = computed(() => {
-  return defaultUpgradeMaterial.value?.name ?? '';
-});
-
-const defaultUpgradeMaterialImageUrl = computed(() => {
-  if (!defaultUpgradeMaterial.value) {
+const defaultMaterialImageUrl = computed(() => {
+  if (!defaultMaterial.value) {
     return '';
   }
-  return new URL(`../assets/images/${defaultUpgradeMaterial.value.imageName}`, import.meta.url)
-    .href;
+  return new URL(`../assets/images/${defaultMaterial.value.imageName}`, import.meta.url).href;
 });
 
-const enrichedMaterialUsed = computed(() => {
+const isEnrichedMaterialUsed = computed(() => {
   return enrichedMaterialUsedFrom.value !== -1;
 });
 
@@ -380,7 +375,7 @@ const enrichedMaterialUsedFromIndex = computed(() => {
 
 const defaultMaterialUpgradeProbabilities = computed(() => {
   const npcProbabilities = upgradeData.value.probabilities.npc;
-  const sliceIndex = enrichedMaterialUsed.value
+  const sliceIndex = isEnrichedMaterialUsed.value
     ? enrichedMaterialUsedFromIndex.value
     : upgradeUntilIndex.value + 1;
 
@@ -398,7 +393,7 @@ const defaultMaterialUpgradeProbabilities = computed(() => {
 });
 
 const enrichedMaterialUpgradeProbabilities = computed(() => {
-  if (!enrichedMaterialUsed.value) {
+  if (!isEnrichedMaterialUsed.value) {
     return [];
   }
   if (isArmorItemTypeSelected.value) {
@@ -457,7 +452,7 @@ const requiredUpgradeMaterials = computed<RequiredUpgradeMaterials>(() => {
   );
 });
 
-const defaultUpgradeMaterialRequiredCount = computed(() => {
+const defaultMaterialRequiredCount = computed(() => {
   return requiredUpgradeMaterials.value.defaultMaterialCount;
 });
 
@@ -469,11 +464,8 @@ const itemCost = computed(() => {
   return roundToDecimalPlace(itemsRequiredCount.value * itemPrice.value, 0);
 });
 
-const defaultUpgradeMaterialCost = computed(() => {
-  return roundToDecimalPlace(
-    defaultUpgradeMaterialRequiredCount.value * defaultMaterialPrice.value,
-    0
-  );
+const defaultMaterialCost = computed(() => {
+  return roundToDecimalPlace(defaultMaterialRequiredCount.value * defaultMaterialPrice.value, 0);
 });
 
 const enrichedMaterialCost = computed(() => {
@@ -484,19 +476,16 @@ const npcComission = computed(() => {
   if (isWeaponItemTypeSelected.value && isWhiteSmithUpgradeMethodSelected.value) {
     return 0;
   }
-  const defaultUpgradeMaterialComission =
-    defaultUpgradeMaterialRequiredCount.value * upgradeData.value.npcUpgradePrice;
+  const defaultMaterialComission =
+    defaultMaterialRequiredCount.value * upgradeData.value.npcUpgradePrice;
   const erichedOriComission =
     enrichedMaterialRequiredCount.value * npcUpgradePriceWithEnrichedMaterial;
-  return roundToDecimalPlace(defaultUpgradeMaterialComission + erichedOriComission, 0);
+  return roundToDecimalPlace(defaultMaterialComission + erichedOriComission, 0);
 });
 
 const totalUpgradeCost = computed(() => {
   return roundToDecimalPlace(
-    itemCost.value +
-      defaultUpgradeMaterialCost.value +
-      enrichedMaterialCost.value +
-      npcComission.value,
+    itemCost.value + defaultMaterialCost.value + enrichedMaterialCost.value + npcComission.value,
     0
   );
 });
@@ -540,11 +529,11 @@ function saveEnrichedMaterialPriceToLocalStorage() {
 }
 
 function saveDefaultMaterialPriceToLocalStorage() {
-  if (!defaultUpgradeMaterial.value) {
+  if (!defaultMaterial.value) {
     return;
   }
   const materialPrice: MaterialPrice = {
-    id: defaultUpgradeMaterial.value?.id,
+    id: defaultMaterial.value?.id,
     price: defaultMaterialPrice.value
   };
   saveMaterialPriceToLocalStorage(materialPrice);
@@ -579,7 +568,7 @@ watch(selectedUpgradeItemType, () => {
 });
 
 watch(upgradeUntil, (newVal) => {
-  if (!enrichedMaterialUsed.value) {
+  if (!isEnrichedMaterialUsed.value) {
     return;
   }
   if (newVal < enrichedMaterialUsedFrom.value) {
@@ -588,7 +577,7 @@ watch(upgradeUntil, (newVal) => {
 });
 
 watch(
-  defaultUpgradeMaterial,
+  defaultMaterial,
   (newVal) => {
     if (!newVal) {
       return;
