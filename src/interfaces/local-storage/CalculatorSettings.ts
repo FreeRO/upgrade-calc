@@ -1,1 +1,3 @@
-export default interface CalculatorSettings {}
+export default interface CalculatorSettings {
+  darkModeEnabled: boolean;
+}

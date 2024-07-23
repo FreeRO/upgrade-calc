@@ -1,6 +1,9 @@
 <template>
   <div class="upgrade-calculator">
-    <div class="upgrade-calculator__title">Калькулятор стоимости заточки</div>
+    <div class="upgrade-calculator__header">
+      <div class="upgrade-calculator__title">Калькулятор стоимости заточки</div>
+      <DarkModeToggle />
+    </div>
     <UpgradeForm />
   </div>
 </template>
@@ -8,6 +11,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import UpgradeForm from '@/components/UpgradeForm.vue';
+import DarkModeToggle from '@/components/DarkModeToggle.vue';
 </script>
 
 <style scoped lang="scss">
@@ -15,16 +19,20 @@ import UpgradeForm from '@/components/UpgradeForm.vue';
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
-  background-color: #ebebeb;
-  border-radius: 7px;
-  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-
+  padding: 0 1.5rem;
+  border-radius: var(--c-border-radius-medium);
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin-bottom: 2.4rem;
+    justify-content: space-between;
+  }
   &__title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     text-align: left;
-    margin-bottom: 1.5rem;
+    margin-right: 2rem;
   }
 }
 

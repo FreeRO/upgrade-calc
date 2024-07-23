@@ -14,13 +14,14 @@
 }
 
 .form-calculation-results {
-  background-color: #fefefe;
-  border-radius: 5px;
-  padding: 1rem 1.5rem;
-  padding-bottom: 0.75rem;
+  background-color: var(--color-card-bg);
+  padding: 1.5rem 2rem;
+  padding-bottom: 1.5rem;
   margin-bottom: auto;
   flex-grow: 1;
-
+  border-radius: var(--c-border-radius-medium);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--box-shadow-card);
   &__title {
     width: 100%;
     text-align: center;
@@ -30,16 +31,24 @@
   &__total-cost {
     width: 100%;
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #1c64f2;
+    margin-bottom: 1rem;
+    color: var(--color-text-accent);
+    word-break: break-all;
   }
   &__subtitle {
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 400;
     margin-bottom: 0.5rem;
   }
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-card-border);
+  margin-bottom: 1.85rem;
 }
 
 .form-calculation-result {
@@ -47,7 +56,7 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.7rem;
 
   &__value {
     font-weight: 500;
@@ -67,7 +76,7 @@
   &__multiplier-icon {
     width: 0.8rem;
     height: 0.8rem;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path d="M6 6 L18 18 M6 18 L18 6" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>');
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path d="M6 6 L18 18 M6 18 L18 6" stroke="%232A2D33" stroke-width="2" stroke-linecap="round"/></svg>');
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100%;
@@ -75,198 +84,8 @@
   }
 }
 
-.form-input-wrapper {
-  margin-bottom: 1rem;
-}
-
-.form-input-label {
-  display: flex;
-  flex-direction: column;
-
-  &__text {
-    margin-bottom: 0.3rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #171e28;
-  }
-}
-
-input,
-select {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  &:focus {
-    border-color: #1c64f2;
-    box-shadow:
-      0 0 0 0px #fff,
-      0 0 0 1px #1c64f2,
-      0 0 #0000;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    border-color: #3b82f6;
-  }
-}
-
-input[type='number'],
-input[type='text'] {
-  background-color: #f9fafb;
-  border: 1px solid #d1d5db;
-  color: #1f2937;
-  border-radius: 0.5rem;
-  display: block;
-  width: 100%;
-  padding: 0.625rem;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  &:focus {
-    border-color: #3b82f6;
-  }
-  &:hover {
-    background-color: #fcfcfd;
-  }
-}
-
-.dark input[type='number'],
-.dark input[type='text'] {
-  background-color: #374151;
-  border: 1px solid #4b5563;
-  color: #9ca3af;
-  color: #ffffff;
-
-  &:focus {
-    border-color: #3b82f6;
-  }
-}
-
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
-  background-position: right 0.75rem center;
-  background-repeat: no-repeat;
-  background-size: 0.75em 0.75em;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-  background-color: #f9fafb;
-  border: 1px solid #d1d5db;
-  color: #1f2937;
-  border-radius: 0.5rem;
-  display: block;
-  width: 100%;
-  padding: 0.625rem;
-  padding-right: 2.5rem;
-  &:hover {
-    background-color: #fcfcfd;
-  }
-}
-
-.dark select {
-  background-color: #374151;
-  border: 1px solid #4b5563;
-  color: #ffffff;
-  &::placeholder {
-    color: #9ca3af;
-  }
-}
-
-button {
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  color: #ffffff;
-  background-color: #1d4ed8;
-  font-weight: 400;
-  font-size: 0.875rem;
-  border-radius: 0.5rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  outline: none;
-  border: none;
-  transition:
-    background-color 0.1s ease-in-out,
-    color 0.1s ease-in-out;
-
-  &:hover {
-    background-color: #1e40af;
-  }
-  &:focus {
-    box-shadow:
-      0 0 0 0px #fff,
-      0 0 0 2px rgb(164 202 254 / 1),
-      0 0 #0000;
-  }
-
-  .dark button {
-    background-color: #2563eb;
-    &:hover {
-      background-color: #1e3a8a;
-    }
-  }
-}
-
-.button {
-  &__img-wrapper {
-    width: 1.5rem;
-    display: flex;
-    flex-direction: row;
-    margin-bottom: auto;
-    margin-right: 0.5rem;
-    &.refine-method {
-      width: 2rem;
-    }
-  }
-  &__img {
-    width: 100%;
-    height: auto;
-  }
-  &__text {
-  }
-}
-
-.button-group {
-  button {
-    color: #1f2937;
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 0;
-    border-right: 1px solid transparent;
-    outline: 2px solid transparent;
-    position: relative;
-    z-index: 1;
-    &:nth-of-type(1) {
-      border-radius: 0.375rem 0 0 0.375rem;
-    }
-    &:nth-last-of-type(1) {
-      border-radius: 0 0.375rem 0.375rem 0;
-      border: 1px solid #d1d5db;
-    }
-    &:only-of-type {
-      border-radius: 0.375rem;
-      border: 1px solid #d1d5db;
-    }
-    &:hover {
-      background-color: #f3f4f6;
-      color: #1d4ed8;
-    }
-    &:focus {
-      z-index: 10;
-    }
-    &.reduced-horizontal-padding {
-      padding-left: 0.85rem;
-      padding-right: 1rem;
-    }
-    &.selected {
-      z-index: 9;
-      color: #1d4ed8;
-      box-shadow:
-        0 0 0 0px #fff,
-        0 0 0 1px #1c64f2,
-        0 0 #0000;
-      border: 1px solid #1c64f2;
-      font-weight: 500;
-    }
+.dark .form-calculation-result-key {
+  &__multiplier-icon {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path d="M6 6 L18 18 M6 18 L18 6" stroke="%23e5e7eb" stroke-width="2" stroke-linecap="round"/></svg>');
   }
 }
