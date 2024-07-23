@@ -30,10 +30,10 @@ const upgradeMaterials: UpgradeMaterial[] = [
     imageName: 'enriched-elu.gif'
   },
   {
-    id: 'pha',
-    name: 'Pharcon',
+    id: 'phracon',
+    name: 'Phracon',
     price: 200,
-    imageName: 'pharcon.gif'
+    imageName: 'phracon.gif'
   },
   {
     id: 'emv',
@@ -64,7 +64,7 @@ const weaponUpgradeData: WeaponUpgradeData = {
       whiteSmithWithEnrichedOri: [1, 1, 1, 1, 1, 1, 1, 0.86, 0.66, 0.38]
     },
     npcUpgradePrice: 50,
-    defaultMaterialId: 'pha',
+    defaultMaterialId: 'phracon',
     enrichedMaterialId: 'enriched-ori'
   },
   lvl2: {
