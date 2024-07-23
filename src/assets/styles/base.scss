@@ -98,7 +98,7 @@ body.dark {
   --color-button-hover-bg: var(--c-blue-light-2);
   --color-button-text: var(--c-text-grey);
   --color-button-focus-outline: var(--c-blue-light-2);
-  --color-button-active-outline: var(--c-blue-dark-ALT);
+  --color-button-active-outline: var(--c-blue-dark-alt);
 
   --color-button-group-item-bg: var(--c-grey-blue);
   --color-button-group-item-border: var(--c-blue-grey);
@@ -200,27 +200,6 @@ select {
   padding-right: 2.5rem;
 }
 
-// .dark input[type='number'],
-// .dark input[type='text'] {
-//   background-color: #374151;
-//   border: 1px solid #4b5563;
-//   color: #9ca3af;
-//   color: #ffffff;
-
-//   &:focus {
-//     border-color: #3b82f6;
-//   }
-// }
-
-// .dark select {
-//   background-color: #374151;
-//   border: 1px solid #4b5563;
-//   color: #ffffff;
-//   &::placeholder {
-//     color: #9ca3af;
-//   }
-// }
-
 .input-wrapper {
   margin-bottom: 1rem;
 }
@@ -266,13 +245,6 @@ button {
       0 0 0 2px var(--color-button-focus-outline),
       0 0 #0000;
   }
-
-  // .dark button {
-  //   background-color: #2563eb;
-  //   &:hover {
-  //     background-color: #1e3a8a;
-  //   }
-  // }
 }
 
 .button {
@@ -289,8 +261,6 @@ button {
   &__img {
     width: 100%;
     height: auto;
-  }
-  &__text {
   }
 }
 
