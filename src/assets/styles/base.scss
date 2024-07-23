@@ -12,7 +12,8 @@
   --c-blue: #1c64f2;
   --c-blue-light-1: #4a8df4;
   --c-blue-light-2: #789df5;
-  --c-blue-dark-alt: #548dff;
+  --c-blue-dark-1: #164ab1;
+  --c-blue-alt: #548dff;
 
   --c-light-blue: #f3f4f6;
   --c-light-grey-blue: #f1f3f5;
@@ -47,6 +48,7 @@
   --c-blue-grey: #374151;
   --c-grey-blue: #1f2937;
   --c-grey-blue-light-1: #243b6b;
+  --c-grey-blue-light-2: #345fba;
 
   --c-text-grey: #e5e7eb;
 }
@@ -79,6 +81,8 @@
   --color-text: var(--c-text-light-1);
   --color-card-bg: var(--c-white);
   --color-text-accent: var(--c-blue);
+  --color-link: var(--c-blue);
+  --color-hover-link: var(--c-blue-dark-1);
 
   --color-dark-mode-toggle-icon: var(--c-zinc);
   --color-dark-mode-toggle-hover: var(--c-light-grey-alt);
@@ -94,11 +98,11 @@ body.dark {
   --color-input-hover-bg: var(--c-dark-blue-light-1);
   --color-input-border: var(--c-dark-blue-border);
 
-  --color-button-bg: var(--c-blue-dark-alt);
+  --color-button-bg: var(--c-blue-alt);
   --color-button-hover-bg: var(--c-blue-light-2);
   --color-button-text: var(--c-text-grey);
   --color-button-focus-outline: var(--c-blue-light-2);
-  --color-button-active-outline: var(--c-blue-dark-alt);
+  --color-button-active-outline: var(--c-blue-alt);
 
   --color-button-group-item-bg: var(--c-grey-blue);
   --color-button-group-item-border: var(--c-blue-grey);
@@ -113,7 +117,9 @@ body.dark {
   --color-heading: var(--c-white);
   --color-text: var(--c-text-grey);
   --color-card-bg: var(--c-grey-blue);
-  --color-text-accent: var(--c-blue-dark-alt);
+  --color-text-accent: var(--c-blue-alt);
+  --color-link: var(--c-blue-alt);
+  --color-hover-link: var(--c-grey-blue-light-2);
 
   --color-dark-mode-toggle-icon: var(--c-zinc);
   --color-dark-mode-toggle-hover: var(--c-dark-blue-light-1);
@@ -175,6 +181,10 @@ select {
   padding: 0.625rem;
   outline: 2px solid transparent;
   outline-offset: 2px;
+  transition:
+    background-color 0.05s ease-in-out,
+    color 0.05s ease-in-out;
+
   &:focus {
     border-color: var(--color-button-focus-outline);
     box-shadow:
@@ -202,6 +212,9 @@ select {
 
 .input-wrapper {
   margin-bottom: 1rem;
+  &.input-desktop {
+    display: none;
+  }
 }
 
 .input-label {
@@ -213,6 +226,18 @@ select {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-label-text);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-link);
+  transition: color 0.05s ease-in-out;
+  &:visited {
+    color: var(--color-link);
+  }
+  &:hover {
+    color: var(--color-hover-link);
   }
 }
 
@@ -233,8 +258,8 @@ button {
   outline: none;
   border: none;
   transition:
-    background-color 0.085s ease-in-out,
-    color 0.085s ease-in-out;
+    background-color 0.05s ease-in-out,
+    color 0.05s ease-in-out;
 
   &:hover {
     background-color: var(--color-button-hover-bg);
@@ -306,5 +331,34 @@ button {
         0 0 #0000;
       border: 1px solid var(--color-button-active-outline);
     }
+  }
+}
+
+@media (min-width: 600px) {
+  .input-wrapper {
+    &.input-desktop {
+      display: block;
+    }
+    &.input-mobile {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 1100px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1600px) {
+  body {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 2000px) {
+  body {
+    font-size: 18px;
   }
 }

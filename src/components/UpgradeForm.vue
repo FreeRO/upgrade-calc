@@ -130,7 +130,7 @@
           </select>
         </label>
       </div>
-      <div class="input-wrapper" v-show="isEnrichedMaterialUsagePossible">
+      <div class="input-wrapper input-desktop" v-show="isEnrichedMaterialUsagePossible">
         <div class="input-label">
           <span class="input-label__text">
             Использовать
@@ -165,6 +165,28 @@
           </div>
         </div>
       </div>
+      <div class="input-wrapper input-mobile" v-if="isEnrichedMaterialUsagePossible">
+        <label class="input-label">
+          <span class="input-label__text">
+            Использовать
+            <UpgradeMaterialTag
+              :image-url="enrichedMaterialImageUrl"
+              :material-name="enrichedMaterialName"
+            />
+            c заточки на...
+          </span>
+          <select class="form-input" v-model="enrichedMaterialUsedFrom">
+            <option :value="-1">Не использовать</option>
+            <option
+              v-for="level in possibleEnrichedMaterialUpgradeLevels"
+              :value="level"
+              :key="level"
+            >
+              {{ '+' + level }}
+            </option>
+          </select>
+        </label>
+      </div>
       <div class="input-wrapper" v-show="isEnrichedMaterialUsed">
         <label class="input-label">
           <span class="input-label__text">
@@ -183,84 +205,93 @@
         </label>
       </div>
     </form>
-    <div class="form-calculation-results">
-      <div class="form-calculation-results__title">Средняя стоимость заточки</div>
-      <div class="form-calculation-results__total-cost">
-        {{ formatNumberWithDots(totalUpgradeCost) }}
-      </div>
-      <div class="divider"></div>
-      <!-- <div class="form-calculation-results__subtitle">Разбивка стоимости:</div> -->
-      <div class="form-calculation-result">
-        <div class="form-calculation-result-key">
-          <img
-            v-if="isArmorItemTypeSelected"
-            class="form-calculation-result-key__image"
-            src="../assets/images/icon-armor.gif"
-            alt="Armor icon"
-            width="24"
-            height="24"
-          />
-          <img
-            v-if="isWeaponItemTypeSelected"
-            class="form-calculation-result-key__image"
-            src="../assets/images/icon-weapon.gif"
-            alt="Weapon icon"
-            width="24"
-            height="24"
-          />
-          <div class="form-calculation-result-key__multiplier-icon"></div>
-          <span>
-            {{ itemsRequiredCount }}
+    <div class="form-calculation-results-wrapper">
+      <div class="form-calculation-results">
+        <div class="form-calculation-results__title">Средняя стоимость заточки</div>
+        <div class="form-calculation-results__total-cost">
+          {{ formatNumberWithDots(totalUpgradeCost) }}
+        </div>
+        <div class="divider"></div>
+        <div class="form-calculation-result">
+          <div class="form-calculation-result-key">
+            <img
+              v-if="isArmorItemTypeSelected"
+              class="form-calculation-result-key__image"
+              src="../assets/images/icon-armor.gif"
+              alt="Armor icon"
+              width="24"
+              height="24"
+            />
+            <img
+              v-if="isWeaponItemTypeSelected"
+              class="form-calculation-result-key__image"
+              src="../assets/images/icon-weapon.gif"
+              alt="Weapon icon"
+              width="24"
+              height="24"
+            />
+            <div class="form-calculation-result-key__multiplier-icon"></div>
+            <span>
+              {{ itemsRequiredCount }}
+            </span>
+          </div>
+          <span class="form-calculation-result__value">{{ formatNumberWithDots(itemCost) }}</span>
+        </div>
+        <div class="form-calculation-result">
+          <span class="form-calculation-result-key">
+            <img
+              v-if="defaultMaterialImageUrl"
+              :src="defaultMaterialImageUrl"
+              :alt="defaultMaterialName + ' icon'"
+              width="24"
+              height="24"
+              class="form-calculation-result-key__image"
+            />
+            <div class="form-calculation-result-key__multiplier-icon"></div>
+            <span>
+              {{ defaultMaterialRequiredCount }}
+            </span>
+          </span>
+          <span class="form-calculation-result__value">{{
+            formatNumberWithDots(defaultMaterialCost)
+          }}</span>
+        </div>
+        <div class="form-calculation-result" v-if="isEnrichedMaterialUsed">
+          <span class="form-calculation-result-key">
+            <img
+              v-if="enrichedMaterialImageUrl"
+              :src="enrichedMaterialImageUrl"
+              :alt="enrichedMaterialName + ' icon'"
+              width="24"
+              height="24"
+              class="form-calculation-result-key__image"
+            />
+            <div class="form-calculation-result-key__multiplier-icon"></div>
+            <span>
+              {{ enrichedMaterialRequiredCount }}
+            </span>
+          </span>
+          <span class="form-calculation-result__value">{{
+            formatNumberWithDots(enrichedMaterialCost)
+          }}</span>
+        </div>
+        <div
+          class="form-calculation-result"
+          v-if="isArmorItemTypeSelected || isNpcUpgradeMethodSelected"
+        >
+          <span class="form-calculation-result-key">Комиссия NPC</span>
+          <span class="form-calculation-result__value">
+            {{ formatNumberWithDots(npcComission) }}
           </span>
         </div>
-        <span class="form-calculation-result__value">{{ formatNumberWithDots(itemCost) }}</span>
       </div>
-      <div class="form-calculation-result">
-        <span class="form-calculation-result-key">
-          <img
-            v-if="defaultMaterialImageUrl"
-            :src="defaultMaterialImageUrl"
-            :alt="defaultMaterialName + ' icon'"
-            width="24"
-            height="24"
-            class="form-calculation-result-key__image"
-          />
-          <div class="form-calculation-result-key__multiplier-icon"></div>
-          <span>
-            {{ defaultMaterialRequiredCount }}
-          </span>
-        </span>
-        <span class="form-calculation-result__value">{{
-          formatNumberWithDots(defaultMaterialCost)
-        }}</span>
-      </div>
-      <div class="form-calculation-result" v-if="isEnrichedMaterialUsed">
-        <span class="form-calculation-result-key">
-          <img
-            v-if="enrichedMaterialImageUrl"
-            :src="enrichedMaterialImageUrl"
-            :alt="enrichedMaterialName + ' icon'"
-            width="24"
-            height="24"
-            class="form-calculation-result-key__image"
-          />
-          <div class="form-calculation-result-key__multiplier-icon"></div>
-          <span>
-            {{ enrichedMaterialRequiredCount }}
-          </span>
-        </span>
-        <span class="form-calculation-result__value">{{
-          formatNumberWithDots(enrichedMaterialCost)
-        }}</span>
-      </div>
-      <div
-        class="form-calculation-result"
-        v-if="isArmorItemTypeSelected || isNpcUpgradeMethodSelected"
-      >
-        <span class="form-calculation-result-key">Комиссия NPC</span>
-        <span class="form-calculation-result__value">
-          {{ formatNumberWithDots(npcComission) }}
-        </span>
+      <div class="form-calculation-results__note">
+        Таблицы с шансами см. на
+        <a
+          href="https://wiki.free-ro.com/%D0%97%D0%B0%D1%82%D0%BE%D1%87%D0%BA%D0%B0"
+          target="_blank"
+          >FreeRo Wiki - Заточка</a
+        >
       </div>
     </div>
   </div>
@@ -587,4 +618,125 @@ watch(
 );
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.upgrade-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 3rem;
+  width: 100%;
+  flex-shrink: 0;
+  margin-bottom: 2rem;
+}
+
+.form-calculation-results-wrapper {
+  flex-grow: 1;
+}
+
+.form-calculation-results {
+  background-color: var(--color-card-bg);
+  padding: 1rem 1.5rem;
+  padding-bottom: 1rem;
+  margin-bottom: auto;
+  width: 100%;
+  border-radius: var(--c-border-radius-medium);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--box-shadow-card);
+  margin-bottom: 1rem;
+
+  &__title {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  &__total-cost {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-text-accent);
+    word-break: break-all;
+  }
+  &__subtitle {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+  &__note {
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+  }
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-card-border);
+  margin-bottom: 1.85rem;
+}
+
+.form-calculation-result {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.7rem;
+
+  &__value {
+    font-weight: 500;
+  }
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.form-calculation-result-key {
+  display: flex;
+  align-items: center;
+  margin-right: 0.3rem;
+  &__image {
+    margin-right: 0.3rem;
+  }
+  &__multiplier-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path d="M6 6 L18 18 M6 18 L18 6" stroke="%232A2D33" stroke-width="2" stroke-linecap="round"/></svg>');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-right: 0.3rem;
+  }
+}
+
+.dark .form-calculation-result-key {
+  &__multiplier-icon {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path d="M6 6 L18 18 M6 18 L18 6" stroke="%23e5e7eb" stroke-width="2" stroke-linecap="round"/></svg>');
+  }
+}
+
+@media (min-width: 1100px) {
+  .form-container {
+    flex-direction: row;
+  }
+  .upgrade-form {
+    width: 55%;
+    margin-bottom: 0;
+  }
+  .form-calculation-results {
+    padding: 1.5rem 2rem;
+    padding-bottom: 1.5rem;
+    &__total-cost {
+      font-size: 2.25rem;
+    }
+  }
+}
+</style>
