@@ -1,9 +1,9 @@
 <template>
   <div class="form-container">
     <form class="upgrade-form">
-      <div class="form-input-wrapper">
-        <div class="form-input-label">
-          <span class="form-input-label__text">Тип предмета</span>
+      <div class="input-wrapper">
+        <div class="input-label">
+          <span class="input-label__text">Тип предмета</span>
           <div class="button-group" role="group">
             <button
               class="button"
@@ -44,9 +44,9 @@
           </div>
         </div>
       </div>
-      <div class="form-input-wrapper" v-if="isWeaponItemTypeSelected">
-        <label class="form-input-label">
-          <span class="form-input-label__text">Уровень оружия</span>
+      <div class="input-wrapper" v-if="isWeaponItemTypeSelected">
+        <label class="input-label">
+          <span class="input-label__text">Уровень оружия</span>
           <select class="form-input" v-model="weaponLevel">
             <option v-for="level in weaponLevels" :value="level" :key="level">
               {{ level }}
@@ -54,26 +54,20 @@
           </select>
         </label>
       </div>
-      <div class="form-input-wrapper">
-        <label class="form-input-label">
-          <span class="form-input-label__text">Стоимость +0 предмета</span>
+      <div class="input-wrapper">
+        <label class="input-label">
+          <span class="input-label__text">Стоимость +0 предмета</span>
           <input class="form-input" type="number" v-model="itemPrice" />
         </label>
       </div>
-      <div class="form-input-wrapper">
-        <label class="form-input-label">
-          <span class="form-input-label__text">
+      <div class="input-wrapper">
+        <label class="input-label">
+          <span class="input-label__text">
             Цена
-            <img
-              v-if="defaultMaterialImageUrl"
-              :src="defaultMaterialImageUrl"
-              :alt="defaultMaterialName + ' icon'"
-              width="24"
-              height="24"
-              class="upgrade-material-image"
-            />
-            <span class="upgrade-material-name">{{ defaultMaterialName }}</span
-            >'a
+            <UpgradeMaterialTag
+              :image-url="defaultMaterialImageUrl"
+              :material-name="defaultMaterialName"
+            />'a
           </span>
           <input
             class="form-input"
@@ -83,9 +77,9 @@
           />
         </label>
       </div>
-      <div class="form-input-wrapper" v-show="isWeaponItemTypeSelected">
-        <div class="form-input-label">
-          <span class="form-input-label__text">Кто точит</span>
+      <div class="input-wrapper" v-show="isWeaponItemTypeSelected">
+        <div class="input-label">
+          <span class="input-label__text">Кто точит</span>
           <div class="button-group" role="group">
             <button
               class="button"
@@ -125,9 +119,9 @@
           </div>
         </div>
       </div>
-      <div class="form-input-wrapper">
-        <label class="form-input-label">
-          <span class="form-input-label__text">Заточка до</span>
+      <div class="input-wrapper">
+        <label class="input-label">
+          <span class="input-label__text">Заточка до</span>
           <select class="form-input" v-model="upgradeUntil">
             <option value="0">Не выбрано</option>
             <option v-for="level in upgradeLevels" :value="level" :key="level">
@@ -136,19 +130,14 @@
           </select>
         </label>
       </div>
-      <div class="form-input-wrapper" v-show="isEnrichedMaterialUsagePossible">
-        <div class="form-input-label">
-          <span class="form-input-label__text">
+      <div class="input-wrapper" v-show="isEnrichedMaterialUsagePossible">
+        <div class="input-label">
+          <span class="input-label__text">
             Использовать
-            <img
-              v-if="enrichedMaterialImageUrl"
-              :src="enrichedMaterialImageUrl"
-              :alt="enrichedMaterialName + ' icon'"
-              width="24"
-              height="24"
-              class="upgrade-material-image"
+            <UpgradeMaterialTag
+              :image-url="enrichedMaterialImageUrl"
+              :material-name="enrichedMaterialName"
             />
-            <span class="upgrade-material-name">{{ enrichedMaterialName }}</span>
             c заточки на...</span
           >
           <div class="button-group" role="group">
@@ -176,20 +165,15 @@
           </div>
         </div>
       </div>
-      <div class="form-input-wrapper" v-show="isEnrichedMaterialUsed">
-        <label class="form-input-label">
-          <span class="form-input-label__text">
+      <div class="input-wrapper" v-show="isEnrichedMaterialUsed">
+        <label class="input-label">
+          <span class="input-label__text">
             Цена
-            <img
-              v-if="enrichedMaterialImageUrl"
-              :src="enrichedMaterialImageUrl"
-              :alt="enrichedMaterialName + ' icon'"
-              width="24"
-              height="24"
-              class="upgrade-material-image"
+            <UpgradeMaterialTag
+              :image-url="enrichedMaterialImageUrl"
+              :material-name="enrichedMaterialName"
             />
-            <span class="upgrade-material-name">{{ enrichedMaterialName }}</span></span
-          >
+          </span>
           <input
             class="form-input"
             type="number"
@@ -204,7 +188,8 @@
       <div class="form-calculation-results__total-cost">
         {{ formatNumberWithDots(totalUpgradeCost) }}
       </div>
-      <div class="form-calculation-results__subtitle">Разбивка стоимости:</div>
+      <div class="divider"></div>
+      <!-- <div class="form-calculation-results__subtitle">Разбивка стоимости:</div> -->
       <div class="form-calculation-result">
         <div class="form-calculation-result-key">
           <img
@@ -283,6 +268,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import UpgradeMaterialTag from '@/components/UpgradeMaterialTag.vue';
 import {
   upgradeLevels,
   weaponUpgradeData,
@@ -478,9 +464,9 @@ const npcComission = computed(() => {
   }
   const defaultMaterialComission =
     defaultMaterialRequiredCount.value * upgradeData.value.npcUpgradePrice;
-  const erichedOriComission =
+  const erichedMaterialComission =
     enrichedMaterialRequiredCount.value * npcUpgradePriceWithEnrichedMaterial;
-  return roundToDecimalPlace(defaultMaterialComission + erichedOriComission, 0);
+  return roundToDecimalPlace(defaultMaterialComission + erichedMaterialComission, 0);
 });
 
 const totalUpgradeCost = computed(() => {
@@ -601,13 +587,4 @@ watch(
 );
 </script>
 
-<style scoped lang="scss">
-.upgrade-material-image {
-  margin-bottom: -0.3rem;
-  margin-right: 0.3rem;
-}
-.upgrade-material-name {
-  font-weight: 600;
-  display: inline;
-}
-</style>
+<style scoped lang="scss"></style>
