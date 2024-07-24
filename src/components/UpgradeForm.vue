@@ -649,6 +649,7 @@ watch(
   border: 1px solid var(--color-card-border);
   box-shadow: var(--box-shadow-card);
   margin-bottom: 1rem;
+  margin-left: auto;
 
   &__title {
     width: 100%;
