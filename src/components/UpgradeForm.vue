@@ -732,11 +732,18 @@ watch(
     margin-bottom: 0;
   }
   .form-calculation-results {
+    max-width: 490px;
     padding: 1.5rem 2rem;
     padding-bottom: 1.5rem;
     &__total-cost {
       font-size: 2.25rem;
     }
+  }
+}
+
+@media (min-width: 2000px) {
+  .form-calculation-results {
+    max-width: 540px;
   }
 }
 </style>
