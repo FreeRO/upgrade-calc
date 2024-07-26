@@ -38,7 +38,7 @@ import DarkModeToggle from '@/components/DarkModeToggle.vue';
     font-size: 1.4rem;
     font-weight: 700;
     text-align: left;
-    margin-right: 2rem;
+    margin-right: 1rem;
   }
   &__credits {
     padding-top: 4rem;
@@ -62,7 +62,7 @@ import DarkModeToggle from '@/components/DarkModeToggle.vue';
 
 @media (min-width: 1100px) {
   .upgrade-calculator {
-    max-width: 1250px;
+    max-width: 1220px;
     padding: 0 1.5rem;
     &__header {
       margin-bottom: 2.4rem;
@@ -76,13 +76,13 @@ import DarkModeToggle from '@/components/DarkModeToggle.vue';
 
 @media (min-width: 1600px) {
   .upgrade-calculator {
-    max-width: 1300px;
+    max-width: 1250px;
   }
 }
 
 @media (min-width: 2000px) {
   .upgrade-calculator {
-    max-width: 1350px;
+    max-width: 1300px;
   }
 }
 </style>
