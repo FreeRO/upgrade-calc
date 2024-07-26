@@ -326,7 +326,7 @@ type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';
 
 const selectedUpgradeItemType = ref<UpgradeItemType>('armor');
-const itemPrice = ref(900000);
+const itemPrice = ref(0);
 const defaultMaterialPrice = ref(0);
 const weaponLevel = ref(1);
 const enrichedMaterialPrice = ref(0);
