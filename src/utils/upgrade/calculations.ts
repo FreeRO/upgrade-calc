@@ -69,7 +69,7 @@ function roundToDecimalPlace(num: number, decimalPlaces: number) {
   return Math.round(num * p + e) / p;
 }
 
-function formatNumberWithDots(num: number): string {
+function formatToZenyString(num: number): string {
   const inputString = num.toString();
   let formattedString = '';
   let count = 0;
@@ -89,5 +89,5 @@ export {
   calculateUpgradeAttempts,
   calculateCombinedUpgradeMaterials,
   roundToDecimalPlace,
-  formatNumberWithDots
+  formatToZenyString
 };
