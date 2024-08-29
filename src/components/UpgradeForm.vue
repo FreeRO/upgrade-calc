@@ -209,7 +209,7 @@
       <div class="form-calculation-results">
         <div class="form-calculation-results__title">Средняя стоимость заточки</div>
         <div class="form-calculation-results__total-cost">
-          {{ formatNumberWithDots(totalUpgradeCost) }}
+          {{ formatToZenyString(totalUpgradeCost) }}
         </div>
         <div class="divider"></div>
         <div class="form-calculation-result">
@@ -235,7 +235,7 @@
               {{ itemsRequiredCount }}
             </span>
           </div>
-          <span class="form-calculation-result__value">{{ formatNumberWithDots(itemCost) }}</span>
+          <span class="form-calculation-result__value">{{ formatToZenyString(itemCost) }}</span>
         </div>
         <div class="form-calculation-result">
           <span class="form-calculation-result-key">
@@ -253,7 +253,7 @@
             </span>
           </span>
           <span class="form-calculation-result__value">{{
-            formatNumberWithDots(defaultMaterialCost)
+            formatToZenyString(defaultMaterialCost)
           }}</span>
         </div>
         <div class="form-calculation-result" v-if="isEnrichedMaterialUsed">
@@ -272,7 +272,7 @@
             </span>
           </span>
           <span class="form-calculation-result__value">{{
-            formatNumberWithDots(enrichedMaterialCost)
+            formatToZenyString(enrichedMaterialCost)
           }}</span>
         </div>
         <div
@@ -281,7 +281,7 @@
         >
           <span class="form-calculation-result-key">Комиссия NPC</span>
           <span class="form-calculation-result__value">
-            {{ formatNumberWithDots(npcComission) }}
+            {{ formatToZenyString(npcComission) }}
           </span>
         </div>
       </div>
@@ -311,7 +311,7 @@ import {
 import {
   calculateCombinedUpgradeMaterials,
   calculateUpgradeAttempts,
-  formatNumberWithDots,
+  formatToZenyString,
   roundToDecimalPlace
 } from '@/utils/upgrade/calculations';
 import type WeaponUpgradeData from '@/interfaces/WeaponUpgradeData';
@@ -320,7 +320,6 @@ import type UpgradeMaterial from '@/interfaces/UpgradeMaterial';
 import type ArmorUpgradeData from '@/interfaces/ArmorUpgradeData';
 import type RequiredUpgradeMaterials from '@/interfaces/RequiredUpgradeMaterials';
 import type MaterialPrice from '@/interfaces/local-storage/MaterialPrice';
-import type CalculatorSettings from '@/interfaces/local-storage/CalculatorSettings';
 
 type UpgradeItemType = 'armor' | 'weapon';
 type UpgradeMethod = 'npc' | 'whiteSmith';

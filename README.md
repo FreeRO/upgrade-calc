@@ -1,38 +1,34 @@
-# freero-upgrade-calc
+# Upgrade cost calculator for FreeRo
 
-This template should help get you started developing with Vue 3 in Vite.
+This calculator provides a cost estimation for item upgrades based on the item type (armor or weapon), the base item price, the material type (default or enriched) and its associated cost.
 
-## Recommended IDE Setup
+Designed for FreeRo Ragnarok Online server. The probability data used is detailed here: https://wiki.free-ro.com/%D0%97%D0%B0%D1%82%D0%BE%D1%87%D0%BA%D0%B0
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Stack
 
-## Type Support for `.vue` Imports in TS
+Built with Vue 3 + Typescipt and Node v20.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## How to run
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+Clone the repo, then:
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+#### Compile and Hot-Reload for Development
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+#### Type-Check, Compile and Minify for Production
 
 ```sh
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+#### Lint with [ESLint](https://eslint.org/)
 
 ```sh
 npm run lint

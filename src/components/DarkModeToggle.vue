@@ -1,9 +1,5 @@
 <template>
-  <button
-    type="button"
-    class="dark-mode-toggle inline-flex text-zinc-300 outline-blue-500 hover:text-zinc-400 dark:text-zinc-500 dark:hover:text-zinc-400"
-    @click="toggleDarkMode"
-  >
+  <button type="button" class="dark-mode-toggle" @click="toggleDarkMode">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
